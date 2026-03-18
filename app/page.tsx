@@ -16,22 +16,33 @@ export default function HomePage() {
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundAttachment: "fixed",
-          zIndex: 0,
+          zIndex: -3,
+        }}
+        aria-hidden
+      />
+      <div
+        className="fixed inset-0 pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(to bottom, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0.18) 70%, rgba(0,0,0,0.32) 100%)",
+          boxShadow: "inset 0 0 120px rgba(0,0,0,0.28)",
+          zIndex: -2,
         }}
         aria-hidden
       />
 
       {/* Hero: title + CTA */}
-      <section className="relative min-h-[calc(100vh-4rem)] w-full flex flex-col z-20">
+      <section className="relative min-h-[calc(100vh-4rem)] w-full flex flex-col z-10">
         <div className="relative z-20 flex-1 flex flex-col items-center justify-center px-6">
           <h1
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light text-center tracking-[0.35em]"
+            className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-normal text-center"
             style={{
-              fontFamily: "var(--font-cormorant), Optima, Georgia, serif",
+              fontFamily: "var(--font-logo), cursive",
               color: IVORY,
+              letterSpacing: "0.02em",
             }}
           >
-            STUDIO BAROQUE
+            Studio Baroque
           </h1>
         </div>
 
@@ -51,35 +62,45 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Intro / Services — scroll to reveal; dark overlay for legibility */}
-      <section className="relative z-20 pt-[80vh] pb-20 md:pb-28">
-        {/* 20% black overlay so text is crisp over the background */}
+      {/* Reveal-Window — slim 300px ribbon, fixed background clipped to box */}
+      <section
+        style={{
+          marginTop: 100,
+          marginBottom: 100,
+          position: "relative",
+          zIndex: 0,
+        }}
+        aria-label="Reveal window"
+      >
         <div
-          className="absolute inset-0 bg-black/20"
+          style={{
+            height: 300,
+            width: "100%",
+            overflow: "hidden",
+            clipPath: "inset(0 0 0 0)",
+            WebkitClipPath: "inset(0 0 0 0)",
+            backgroundImage: "url(/landscape-banner.jpg)",
+            backgroundAttachment: "fixed",
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+          }}
           aria-hidden
         />
-        <div className="relative z-10 px-6 md:px-10 max-w-2xl mx-auto">
-          <p
-            className="text-[10px] tracking-[0.4em] uppercase mb-4"
-            style={{ fontFamily: "var(--font-cormorant), Optima, Georgia, serif", color: IVORY, letterSpacing: "0.4em" }}
-          >
-            SERVICES
-          </p>
-          <h2
-            className="text-3xl md:text-4xl font-light italic mb-8 tracking-[0.08em]"
-            style={{ fontFamily: "var(--font-cormorant), Optima, Georgia, serif", color: IVORY }}
-          >
-            Nail artistry reimagined
-          </h2>
-          <p
-            className="text-[15px] leading-relaxed opacity-90"
-            style={{ fontFamily: "var(--font-cormorant), Georgia, serif", color: IVORY }}
-          >
-            Bespoke manicures, gel, acrylics, and custom nail art in West London. Classical elegance meets modern beauty—every set is a collaboration.
-          </p>
+      </section>
+
+      {/* Cover-up section — solid blanket over the banner */}
+      <section
+        className="cover-up-section"
+        style={{
+          position: "relative",
+          zIndex: 10,
+          minHeight: "100vh",
+        }}
+      >
+        <div className="flex justify-center pt-32 pb-20 md:pb-28">
           <Link
             href="/gallery"
-            className="home-cta inline-block mt-10 text-[10px] tracking-[0.45em] uppercase border px-6 py-2 transition-all duration-300"
+            className="home-cta text-[10px] tracking-[0.45em] uppercase border px-6 py-2 transition-all duration-300"
             style={{
               fontFamily: "var(--font-cormorant), Optima, Georgia, serif",
               color: IVORY,

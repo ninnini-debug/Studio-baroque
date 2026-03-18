@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Cormorant_Garamond, Allura } from 'next/font/google'
+import { Cormorant_Garamond, Allura, Pinyon_Script } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { StickyNav } from '@/components/sticky-nav'
 import './globals.css'
@@ -15,6 +15,12 @@ const allura = Allura({
   weight: "400",
   variable: "--font-calligraphy",
 });
+
+const pinyon = Pinyon_Script({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-logo",
+})
 
 export const metadata: Metadata = {
   title: 'Studio Baroque | Nail Artistry by Nina',
@@ -46,9 +52,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${cormorant.variable} ${allura.variable} font-sans antialiased bg-[#050808]`}>
-        <div className="lace-overlay" aria-hidden />
-        <div className="grain-overlay" aria-hidden />
+      <body className={`${cormorant.variable} ${allura.variable} ${pinyon.variable} font-sans antialiased bg-[#050808]`}>
         <StickyNav />
         <div className="main-content">
           {children}
