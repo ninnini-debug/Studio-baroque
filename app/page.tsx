@@ -62,7 +62,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Reveal-Window — slim 300px ribbon, fixed background clipped to box */}
+      {/* Reveal-Window — work photo ribbon, fixed background clipped to box */}
       <section
         style={{
           marginTop: 100,
@@ -74,15 +74,18 @@ export default function HomePage() {
       >
         <div
           style={{
-            height: 300,
+            height: 450,
             width: "100%",
             overflow: "hidden",
             clipPath: "inset(0 0 0 0)",
             WebkitClipPath: "inset(0 0 0 0)",
-            backgroundImage: "url(/landscape-banner.jpg)",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            backgroundImage: 'url("/Untitled design 4.png")',
             backgroundAttachment: "fixed",
             backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
+            boxShadow: "inset 0 0 100px rgba(0,0,0,1)",
           }}
           aria-hidden
         />
