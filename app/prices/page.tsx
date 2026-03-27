@@ -1,4 +1,4 @@
-const IVORY = "#E5DFD3"
+const IVORY = "#1A1A1A"
 
 type PriceItem = {
   name: string
@@ -7,7 +7,7 @@ type PriceItem = {
 }
 
 const PRICES: Array<{
-  category: "Acrylics" | "Gel & BIAB" | "Nail Art"
+  category: "Acrylics" | "Gel & Gel X" | "Nail Art"
   items: PriceItem[]
 }> = [
   {
@@ -19,11 +19,10 @@ const PRICES: Array<{
     ],
   },
   {
-    category: "Gel & BIAB",
+    category: "Gel & Gel X",
     items: [
       { name: "Gel Manicure", price: "£—" },
-      { name: "BIAB Overlay", price: "£—" },
-      { name: "BIAB + Colour", price: "£—" },
+      { name: "Gel X", price: "£—" },
       { name: "Removal", price: "£—" },
     ],
   },
@@ -58,8 +57,7 @@ function PriceRow({ item }: { item: PriceItem }) {
     item.name === "Infill" ||
     item.name === "Removal" ||
     item.name === "Gel Manicure" ||
-    item.name === "BIAB Overlay" ||
-    item.name === "BIAB + Colour" ||
+    item.name === "Gel X" ||
     item.name === "Simple Art (per nail)" ||
     item.name === "Detailed Art (per nail)" ||
     item.name === "Charms / 3D (from)"
@@ -71,7 +69,7 @@ function PriceRow({ item }: { item: PriceItem }) {
           style={{
             fontFamily: "var(--font-cormorant), Georgia, serif",
             color: IVORY,
-            paddingLeft: shiftRight ? 10 : undefined,
+            paddingLeft: shiftRight ? 8 : undefined,
           }}
         >
           {item.name}
@@ -94,30 +92,41 @@ function PriceRow({ item }: { item: PriceItem }) {
 
 export default function PricesPage() {
   return (
-    <main className="min-h-screen relative">
-      {/* Prices-only background */}
-      <div
-        className="fixed inset-0 bg-no-repeat"
-        style={{
-          backgroundImage: "url(/prices-bg.jpg)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundAttachment: "fixed",
-          zIndex: 0,
-        }}
-        aria-hidden
-      />
+    <main
+      className="min-h-screen relative overflow-hidden"
+      style={{
+        backgroundColor: "#FDFCF9",
+      }}
+    >
+      <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }} aria-hidden>
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          src="/video.mp4"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            objectFit: "cover",
+            opacity: 1,
+          }}
+        />
+      </div>
       <div
         className="fixed inset-0 pointer-events-none"
         style={{
-          background:
-            "linear-gradient(to bottom, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.42) 70%, rgba(0,0,0,0.62) 100%)",
-          boxShadow: "inset 0 0 140px rgba(0,0,0,0.55)",
           zIndex: 1,
+          background: "rgba(253,252,249,0.78)",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
         }}
         aria-hidden
       />
-
       <div className="relative z-10 max-w-3xl mx-auto px-6 md:px-10 py-16 md:py-24">
         <div className="flex flex-col items-center mb-16">
           <p
@@ -142,23 +151,23 @@ export default function PricesPage() {
               <div
                 className="px-7 py-8 md:px-12 md:py-10"
                 style={{
-                  backgroundColor: "rgba(10, 10, 10, 0.4)",
-                  border: "1px solid rgba(229, 223, 211, 0.25)",
-                  backdropFilter: "blur(12px)",
-                  WebkitBackdropFilter: "blur(12px)",
+                  backgroundColor: "rgba(253, 252, 249, 0.7)",
+                  border: "1px solid #8D8679",
+                  backdropFilter: "blur(10px)",
+                  WebkitBackdropFilter: "blur(10px)",
                 }}
               >
                 <div className="mb-6">
                   <CategoryHeader title={section.category} />
                 </div>
 
-                <div style={{ border: "1px solid rgba(229, 223, 211, 0.15)" }}>
+                <div style={{ border: "1px solid rgba(141, 134, 121, 0.35)", maxWidth: 560, margin: "0 auto" }}>
                   {section.items.map((item, idx) => (
                     <div
                       key={`${section.category}-${item.name}`}
                       style={
                         idx < section.items.length - 1
-                          ? { borderBottom: "1px solid rgba(229, 223, 211, 0.15)" }
+                          ? { borderBottom: "1px solid rgba(141, 134, 121, 0.3)" }
                           : undefined
                       }
                     >

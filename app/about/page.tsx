@@ -1,63 +1,96 @@
-const MARBLE_BUST = "https://images.unsplash.com/photo-1564399579883-451a5d44ec08?w=1200&q=85"
-const ORCHID = "https://images.unsplash.com/photo-1510883056135-32418a5d4d2b?w=1200&q=85"
+import { AboutBioReveal } from "@/components/about-bio-reveal"
+
+const ARTIST_PORTRAIT = "/IMG_9037.jpg"
 
 export default function AboutPage() {
   return (
-    <main className="relative min-h-screen">
-      <div
-        className="about-watermark absolute top-0 left-0 w-full h-full max-w-[80vw] max-h-[80vh]"
-        style={{ backgroundImage: `url(${MARBLE_BUST})`, top: "10%", left: "5%" }}
-        aria-hidden
-      />
-      <div
-        className="about-watermark absolute top-1/2 right-0 w-[70%] h-[60%]"
-        style={{ backgroundImage: `url(${ORCHID})`, top: "40%", right: "-10%" }}
-        aria-hidden
-      />
+    <main className="about-page-root relative w-full min-h-screen overflow-visible bg-transparent">
+      {/* Fixed video — full viewport, behind UI */}
+      <div className="about-page-video-layer home-hero-video">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          src="/studio-process.mp4"
+          aria-hidden
+        />
+      </div>
 
-      <div className="relative z-10 max-w-2xl mx-auto px-6 md:px-10 py-16 md:py-24">
-        <p
-          className="text-[10px] tracking-[0.5em] uppercase text-[#C9A962] mb-4"
-          style={{ fontFamily: "var(--font-sans)" }}
-        >
-          The Artist
-        </p>
+      {/* Transparent full-viewport flex layer — "Behind the Paintbrush" centered (fixed so it stays centered over video until cream covers) */}
+      <div
+        className="pointer-events-none fixed inset-0 z-0 flex items-center justify-center bg-transparent px-6"
+        style={{
+          height: "100vh",
+          width: "100vw",
+        }}
+      >
         <h1
-          className="text-3xl md:text-4xl lg:text-5xl font-light text-[#F2EDE4] mb-12"
-          style={{ fontFamily: "var(--font-cormorant), Georgia, serif" }}
+          style={{
+            fontFamily: "var(--font-display), 'Playfair Display', serif",
+            fontSize: "clamp(2.5rem, 6vw, 3.5rem)",
+            letterSpacing: "0.5rem",
+            fontWeight: 300,
+            textTransform: "uppercase",
+            color: "#FDFCF9",
+            lineHeight: 1.1,
+            textAlign: "center",
+          }}
         >
           Behind the Paintbrush
         </h1>
-        <div
-          className="space-y-6 text-[#B8B4A8] leading-relaxed text-[15px] md:text-base"
-          style={{ fontFamily: "var(--font-sans)" }}
-        >
-          <p>
-            With 17 years dedicated to the arts and over 4 years perfecting the craft of nail artistry,
-            I bring a unique perspective to every set I create.
-          </p>
-          <p>
-            My journey began with a brush in hand—exploring every medium from oils to watercolours,
-            sculptures to digital art. This lifelong passion for precision and detail naturally evolved
-            into nail artistry: a canvas that travels with you.
-          </p>
-          <p>
-            Studio Baroque was born from a desire to merge classical elegance with modern beauty.
-            Every appointment is a collaborative experience where your vision meets my artistry.
-          </p>
-        </div>
+      </div>
 
-        <div className="mt-24 md:mt-32 flex justify-center">
-          <div className="w-48 h-48 md:w-56 md:h-56 rounded-full border border-[#C9A962]/50 bg-[#0D1212] flex items-center justify-center overflow-hidden">
-            <span
-              className="text-[10px] tracking-[0.4em] uppercase text-[#8A8A82] text-center px-4"
-              style={{ fontFamily: "var(--font-sans)" }}
+      {/* Meet the Artist — margin-top:100vh in CSS: first screen is video + headline; then cream curtain */}
+      <section className="about-cream-curtain w-full pt-[15vh] pb-20 md:pb-28">
+        <div className="w-full">
+          <AboutBioReveal>
+            <p
+              className="text-[17px] md:text-[22px] lg:text-[24px] tracking-[0.45em] md:tracking-[0.5em] uppercase text-[#1A1A1A] text-center mb-10 md:mb-12"
+              style={{ fontFamily: "var(--font-display), 'Playfair Display', serif" }}
             >
-              Portrait
-            </span>
+              MEET THE ARTIST
+            </p>
+            <div className="space-y-8 md:space-y-10 text-center text-[#1A1A1A]">
+              <p>
+                I&apos;ve been making art for as long as I can remember. Art was never something I just
+                &ldquo;picked up&rdquo;, it is how I see the world. Over time, I put my creativity into doing
+                nails. I found a way to combine detail, precision and personality into every set I create in a
+                way that feels completely my own.
+              </p>
+              <p>
+                The balance between expression and discipline is what I love most about nail art. Every set is a
+                new opportunity to create something intentional that is carefully designed down to the smallest
+                detail.
+              </p>
+              <p>
+                This isn&apos;t just about getting your nails done, it&apos;s about creating something that feels
+                personal and thoughtfully made. It&apos;s a chance to connect with one another and create new
+                relationships. It&apos;s a space to relax and talk or simply enjoy a quiet moment without any
+                pressure.
+              </p>
+              <p>
+                The space is all yours. A chance to have a mini canvas on each nail to carry around with you
+                anywhere. And to share a collaborative experience where your vision meets my artistry.
+              </p>
+            </div>
+          </AboutBioReveal>
+
+          <div className="relative mt-28 md:mt-40 flex justify-center px-6 md:px-10">
+            <div className="film-portrait-frame">
+              <div className="film-portrait-image-wrap">
+                <img
+                  src={ARTIST_PORTRAIT}
+                  alt="Artist portrait"
+                  className="w-full h-full object-cover scale-[1.02]"
+                  style={{ filter: "contrast(1.28) brightness(0.94)" }}
+                />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     </main>
   )
 }

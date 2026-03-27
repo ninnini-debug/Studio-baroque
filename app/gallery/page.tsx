@@ -35,6 +35,30 @@ const NAIL_ART_ITEMS: GalleryItem[] = [
   },
 ]
 
+const INDIVIDUAL_NAIL_ART_ITEMS: GalleryItem[] = [
+  {
+    id: "in1",
+    src: "https://images.unsplash.com/photo-1602585574617-9e7a6f76f6de?w=1200&q=85",
+    aspect: "aspect-[4/5]",
+    title: "Individual Detail I",
+    description: "SINGLE NAIL • MICRO DETAIL",
+  },
+  {
+    id: "in2",
+    src: "https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=1200&q=85",
+    aspect: "aspect-square",
+    title: "Individual Detail II",
+    description: "PRECISION • STUDIO FINISH",
+  },
+  {
+    id: "in3",
+    src: "https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=1200&q=85",
+    aspect: "aspect-[3/4]",
+    title: "Individual Detail III",
+    description: "SIGNATURE • HAND-PAINTED",
+  },
+]
+
 // Note: using the 3 Fine Art files currently present in `public/`.
 const FINE_ART_ITEMS: GalleryItem[] = [
   {
@@ -70,7 +94,7 @@ function VaultGrid({ items }: { items: GalleryItem[] }) {
             <button
               type="button"
               onClick={() => setLightbox(item)}
-              className={`gallery-bedframe block w-full overflow-hidden ${item.aspect} bg-[#050505] focus:outline-none focus:ring-1 focus:ring-[#E5DFD3]/40`}
+              className={`gallery-bedframe block w-full overflow-hidden ${item.aspect} bg-[#FDFCF9] focus:outline-none focus:ring-1 focus:ring-[#1A1A1A]/30`}
               style={{ borderWidth: "0.5px" }}
             >
               <div
@@ -101,6 +125,14 @@ function VaultGrid({ items }: { items: GalleryItem[] }) {
           </button>
           <div className="w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
             <div className="relative w-full max-h-[78vh] flex items-center justify-center">
+              <button
+                type="button"
+                onClick={() => setLightbox(null)}
+                className="absolute top-3 right-3 z-10 p-2 rounded-full bg-[#050505]/70 text-[#E5DFD3]/90 hover:text-[#E5DFD3] border border-[#E5DFD3]/30"
+                aria-label="Close image"
+              >
+                <X size={18} />
+              </button>
               <img
                 src={lightbox.src}
                 alt={lightbox.title}
@@ -131,25 +163,61 @@ function VaultGrid({ items }: { items: GalleryItem[] }) {
 export default function GalleryPage() {
   return (
     <main
-      className="min-h-screen museum-vault museum-vault-bg"
+      className="min-h-screen -mt-16 pt-16 relative overflow-hidden"
       style={{
         minHeight: "100vh",
-        backgroundImage:
-          'linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("/background.png")',
-        backgroundAttachment: "fixed",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+        backgroundColor: "#FDFCF9",
       }}
     >
-      <div className="max-w-6xl mx-auto px-6 md:px-10 py-16 md:py-24">
+      {/* Same source as About hero — zoomed + blurred so gallery feels soft, not flat */}
+      <div
+        className="fixed inset-0 overflow-hidden pointer-events-none"
+        style={{ zIndex: 0 }}
+        aria-hidden
+      >
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          src="/studio-process.mp4"
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            width: "120vw",
+            height: "120vh",
+            minWidth: "100%",
+            minHeight: "100%",
+            transform: "translate(-50%, -50%) scale(1.12)",
+            objectFit: "cover",
+            objectPosition: "center",
+            filter: "blur(6px)",
+            WebkitFilter: "blur(6px)",
+            opacity: 1,
+          }}
+        />
+      </div>
+      <div
+        className="fixed inset-0 pointer-events-none"
+        style={{
+          zIndex: 1,
+          background: "rgba(253,252,249,0.62)",
+          backdropFilter: "blur(2px)",
+          WebkitBackdropFilter: "blur(2px)",
+        }}
+        aria-hidden
+      />
+      <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-10 py-16 md:py-24">
         <p
-          className="text-[10px] tracking-[0.5em] uppercase text-[#E5DFD3]/80 mb-2"
+          className="text-[10px] tracking-[0.5em] uppercase text-[#4A453E] mb-2"
           style={{ fontFamily: "Optima, var(--font-cormorant), Georgia, serif" }}
         >
           Portfolio
         </p>
         <h1
-          className="text-3xl md:text-4xl font-light text-[#E5DFD3] mb-20"
+          className="text-3xl md:text-4xl font-light text-[#1A1A1A] mb-20"
           style={{ fontFamily: "var(--font-cormorant), Georgia, serif" }}
         >
           Gallery
@@ -157,7 +225,7 @@ export default function GalleryPage() {
 
         <section className="mb-24">
           <h2
-            className="text-[10px] tracking-[0.45em] uppercase text-[#E5DFD3]/85 mb-10"
+            className="text-[10px] tracking-[0.45em] uppercase text-[#4A453E] mb-10"
             style={{ fontFamily: "Optima, var(--font-cormorant), Georgia, serif" }}
           >
             Nail Art
@@ -165,9 +233,19 @@ export default function GalleryPage() {
           <VaultGrid items={NAIL_ART_ITEMS} />
         </section>
 
+        <section className="mb-24">
+          <h2
+            className="text-[10px] tracking-[0.45em] uppercase text-[#4A453E] mb-10"
+            style={{ fontFamily: "Optima, var(--font-cormorant), Georgia, serif" }}
+          >
+            Individual Nail Art
+          </h2>
+          <VaultGrid items={INDIVIDUAL_NAIL_ART_ITEMS} />
+        </section>
+
         <section>
           <h2
-            className="text-[10px] tracking-[0.45em] uppercase text-[#E5DFD3]/85 mb-10"
+            className="text-[10px] tracking-[0.45em] uppercase text-[#4A453E] mb-10"
             style={{ fontFamily: "Optima, var(--font-cormorant), Georgia, serif" }}
           >
             Fine Art

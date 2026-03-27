@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
-import { Cormorant_Garamond, Allura, Pinyon_Script } from 'next/font/google'
+import { Cormorant_Garamond, Allura, Pinyon_Script, Cinzel } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { CornerDate } from '@/components/corner-date'
 import { StickyNav } from '@/components/sticky-nav'
 import './globals.css'
 
@@ -20,6 +21,12 @@ const pinyon = Pinyon_Script({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-logo",
+})
+
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-display",
 })
 
 export const metadata: Metadata = {
@@ -52,7 +59,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${cormorant.variable} ${allura.variable} ${pinyon.variable} font-sans antialiased bg-[#050808]`}>
+      <body className={`${cormorant.variable} ${allura.variable} ${pinyon.variable} ${cinzel.variable} font-sans antialiased bg-[#050808]`}>
+        <CornerDate />
         <StickyNav />
         <div className="main-content">
           {children}
