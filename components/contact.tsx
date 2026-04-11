@@ -162,7 +162,7 @@ export function Contact() {
                         type="email"
                         required
                         autoComplete="email"
-                        placeholder="you@email.com"
+                        placeholder="nailsbyStudioB@gmail.com"
                         className={fieldClassName}
                         style={{ fontFamily: "var(--font-sans)", borderColor: BORDER_TAUPE }}
                       />

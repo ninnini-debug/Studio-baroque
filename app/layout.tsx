@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import { Cormorant_Garamond, Allura, Pinyon_Script, Cinzel } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
-import { CornerDate } from '@/components/corner-date'
+import { GalleryFrame } from '@/components/gallery-frame'
+import { ScrollToTop } from '@/components/scroll-to-top'
 import { StickyNav } from '@/components/sticky-nav'
 import './globals.css'
 
@@ -60,8 +61,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${cormorant.variable} ${allura.variable} ${pinyon.variable} ${cinzel.variable} font-sans antialiased bg-[#050808]`}>
-        <CornerDate />
         <StickyNav />
+        <GalleryFrame />
+        <ScrollToTop />
         <div className="main-content">
           {children}
         </div>

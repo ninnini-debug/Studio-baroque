@@ -1,258 +1,274 @@
 "use client"
 
-import { useState } from "react"
-import { X } from "lucide-react"
+import { useCallback, useEffect, useState } from "react"
+import { ChevronLeft, ChevronRight, X } from "lucide-react"
+import {
+  CardStack,
+  type FanItem,
+  type GalleryOpenDetail,
+} from "@/components/gallery-fan-stack"
 
-type GalleryItem = {
-  id: string
-  src: string
-  aspect: string
-  title: string
-  description: string
+const ALABASTER = "#FDFCF9"
+
+/** URL-encoded paths in /public */
+const VIDEO_FLOWER = "/flower%20video.mp4"
+const VIDEO_2 = "/Video%202.mp4"
+
+function SectionVideoBackdrop({ src }: { src: string }) {
+  return (
+    <video
+      className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-center opacity-30"
+      src={src}
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="auto"
+      aria-hidden
+    />
+  )
 }
 
-const NAIL_ART_ITEMS: GalleryItem[] = [
-  {
-    id: "n1",
-    src: "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=1200&q=85",
-    aspect: "aspect-[4/5]",
-    title: "Nail Study I",
-    description: "CUSTOM SET • GEL / ACRYLIC",
-  },
-  {
-    id: "n2",
-    src: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=1200&q=85",
-    aspect: "aspect-square",
-    title: "Nail Study II",
-    description: "DETAIL WORK • HAND-PAINTED",
-  },
-  {
-    id: "n3",
-    src: "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=1200&q=85",
-    aspect: "aspect-[3/4]",
-    title: "Nail Study III",
-    description: "FRENCH • MODERN CLASSIC",
-  },
+const NAIL_ART_SRC = [
+  "/nail%20art%203.jpg",
+  "/nail%20art%201.jpg",
+  "/nail%20art%202.jpg",
+] as const
+
+const INDIVIDUAL_SRC = [
+  "/individual%20nail%20art%201.jpg",
+  "/individual%20nail%20art%202.jpg",
+  "/individual%20nail%20art%203.jpg",
+] as const
+
+const FINE_ART_FLOWERS: { id: string; src: string; title: string }[] = [
+  { id: "f1", src: "/fine-art-2.PNG", title: "Vase & Bloom" },
+  { id: "f2", src: "/fine-art-2.jpg", title: "Still Life" },
+  { id: "f3", src: "/fine-art-3.PNG", title: "Portrait" },
 ]
 
-const INDIVIDUAL_NAIL_ART_ITEMS: GalleryItem[] = [
-  {
-    id: "in1",
-    src: "https://images.unsplash.com/photo-1602585574617-9e7a6f76f6de?w=1200&q=85",
-    aspect: "aspect-[4/5]",
-    title: "Individual Detail I",
-    description: "SINGLE NAIL • MICRO DETAIL",
-  },
-  {
-    id: "in2",
-    src: "https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=1200&q=85",
-    aspect: "aspect-square",
-    title: "Individual Detail II",
-    description: "PRECISION • STUDIO FINISH",
-  },
-  {
-    id: "in3",
-    src: "https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=1200&q=85",
-    aspect: "aspect-[3/4]",
-    title: "Individual Detail III",
-    description: "SIGNATURE • HAND-PAINTED",
-  },
+const NAIL_ITEMS: readonly [FanItem, FanItem, FanItem] = [
+  { src: NAIL_ART_SRC[0], alt: "Nail art 3" },
+  { src: NAIL_ART_SRC[1], alt: "Nail art 1" },
+  { src: NAIL_ART_SRC[2], alt: "Nail art 2" },
 ]
 
-// Note: using the 3 Fine Art files currently present in `public/`.
-const FINE_ART_ITEMS: GalleryItem[] = [
-  {
-    id: "f2jpg",
-    src: "/fine-art-2.jpg",
-    aspect: "aspect-[4/5]",
-    title: "Still Life",
-    description: "OIL • FLORAL STUDY",
-  },
-  {
-    id: "f2png",
-    src: "/fine-art-2.PNG",
-    aspect: "aspect-[3/4]",
-    title: "Vase & Bloom",
-    description: "MIXED MEDIA • ATMOSPHERE",
-  },
-  {
-    id: "f3png",
-    src: "/fine-art-3.PNG",
-    aspect: "aspect-square",
-    title: "Portrait",
-    description: "OIL • FIGURE STUDY",
-  },
+const INDIVIDUAL_ITEMS: readonly [FanItem, FanItem, FanItem] = [
+  { src: INDIVIDUAL_SRC[0], alt: "Individual art 1" },
+  { src: INDIVIDUAL_SRC[1], alt: "Individual art 2" },
+  { src: INDIVIDUAL_SRC[2], alt: "Individual art 3" },
 ]
 
-function VaultGrid({ items }: { items: GalleryItem[] }) {
-  const [lightbox, setLightbox] = useState<GalleryItem | null>(null)
+const FINE_ITEMS: readonly [FanItem, FanItem, FanItem] = [
+  { src: FINE_ART_FLOWERS[0].src, alt: FINE_ART_FLOWERS[0].title },
+  { src: FINE_ART_FLOWERS[1].src, alt: FINE_ART_FLOWERS[1].title },
+  { src: FINE_ART_FLOWERS[2].src, alt: FINE_ART_FLOWERS[2].title },
+]
+
+type LightboxState = { items: string[]; index: number }
+
+function LightboxGallery({
+  state,
+  onClose,
+  onPrev,
+  onNext,
+}: {
+  state: LightboxState | null
+  onClose: () => void
+  onPrev: () => void
+  onNext: () => void
+}) {
+  useEffect(() => {
+    if (state === null) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose()
+      if (e.key === "ArrowLeft") {
+        e.preventDefault()
+        onPrev()
+      }
+      if (e.key === "ArrowRight") {
+        e.preventDefault()
+        onNext()
+      }
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [state, onClose, onPrev, onNext])
+
+  if (state === null) return null
+
+  const { items, index } = state
+  const src = items[index]
+  const n = items.length
+  const label = `${index + 1} / ${n}`
+
   return (
-    <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-        {items.map((item) => (
-          <div key={item.id}>
-            <button
-              type="button"
-              onClick={() => setLightbox(item)}
-              className={`gallery-bedframe block w-full overflow-hidden ${item.aspect} bg-[#FDFCF9] focus:outline-none focus:ring-1 focus:ring-[#1A1A1A]/30`}
-              style={{ borderWidth: "0.5px" }}
-            >
-              <div
-                className="h-full w-full bg-cover bg-center bg-no-repeat opacity-100 hover:opacity-90 transition-opacity duration-300"
-                style={{ backgroundImage: `url(${item.src})` }}
-              />
-            </button>
-          </div>
-        ))}
-      </div>
-      {lightbox !== null && (
-        <div
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-[#050505]/98 p-6"
-          onClick={() => setLightbox(null)}
-          onKeyDown={(e) => e.key === "Escape" && setLightbox(null)}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Image"
-          tabIndex={-1}
+    <div
+      className="fixed inset-0 z-[120] flex items-center justify-center bg-[#050505]/96 p-4 sm:p-6"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Enlarged image"
+      tabIndex={-1}
+    >
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation()
+          onClose()
+        }}
+        className="fixed right-3 top-3 z-[130] flex h-12 w-12 items-center justify-center rounded-full border border-white/25 bg-black/55 text-white shadow-lg backdrop-blur-sm transition-colors hover:bg-black/75 sm:right-5 sm:top-5"
+        aria-label="Close"
+      >
+        <X size={22} strokeWidth={2} />
+      </button>
+
+      <p
+        className="pointer-events-none fixed left-1/2 top-4 z-[130] -translate-x-1/2 text-[10px] tabular-nums tracking-[0.2em] text-white/70"
+        style={{ fontFamily: "var(--font-cormorant), Georgia, serif" }}
+        aria-live="polite"
+      >
+        {label}
+      </p>
+
+      <div
+        className="relative z-[50] flex w-full max-w-5xl items-center justify-center gap-2 sm:gap-4"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation()
+            onPrev()
+          }}
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white backdrop-blur-sm transition-colors hover:bg-black/60 sm:h-12 sm:w-12"
+          aria-label="Previous image"
         >
-          <button
-            type="button"
-            onClick={() => setLightbox(null)}
-            className="absolute top-6 right-6 p-2 text-[#E5DFD3]/70 hover:text-[#E5DFD3]"
-            aria-label="Close"
-          >
-            <X size={24} />
-          </button>
-          <div className="w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
-            <div className="relative w-full max-h-[78vh] flex items-center justify-center">
-              <button
-                type="button"
-                onClick={() => setLightbox(null)}
-                className="absolute top-3 right-3 z-10 p-2 rounded-full bg-[#050505]/70 text-[#E5DFD3]/90 hover:text-[#E5DFD3] border border-[#E5DFD3]/30"
-                aria-label="Close image"
-              >
-                <X size={18} />
-              </button>
-              <img
-                src={lightbox.src}
-                alt={lightbox.title}
-                className="max-h-[78vh] w-auto max-w-full object-contain"
-              />
-            </div>
-            <div className="mt-6 text-center">
-              <div
-                className="text-5xl sm:text-6xl font-normal"
-                style={{ fontFamily: "var(--font-logo), cursive", color: "#E5DFD3" }}
-              >
-                {lightbox.title}
-              </div>
-              <div
-                className="mt-3 text-[10px] tracking-[0.5em] uppercase opacity-80"
-                style={{ fontFamily: "Optima, var(--font-cormorant), Georgia, serif", color: "#E5DFD3" }}
-              >
-                {lightbox.description}
-              </div>
-            </div>
-          </div>
+          <ChevronLeft size={26} strokeWidth={1.5} />
+        </button>
+
+        <div className="flex min-h-0 min-w-0 flex-1 items-center justify-center">
+          <img
+            key={src}
+            src={src}
+            alt=""
+            className="max-h-[85vh] w-auto max-w-full object-contain"
+          />
         </div>
-      )}
-    </>
+
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation()
+            onNext()
+          }}
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white backdrop-blur-sm transition-colors hover:bg-black/60 sm:h-12 sm:w-12"
+          aria-label="Next image"
+        >
+          <ChevronRight size={26} strokeWidth={1.5} />
+        </button>
+      </div>
+    </div>
   )
 }
 
 export default function GalleryPage() {
+  const [lightbox, setLightbox] = useState<LightboxState | null>(null)
+
+  const open = useCallback((detail: GalleryOpenDetail) => {
+    setLightbox({ items: [...detail.allSrcs], index: detail.index })
+  }, [])
+
+  const goPrev = useCallback(() => {
+    setLightbox((s) => {
+      if (s === null || s.items.length < 2) return s
+      const nextIndex = (s.index - 1 + s.items.length) % s.items.length
+      return { ...s, index: nextIndex }
+    })
+  }, [])
+
+  const goNext = useCallback(() => {
+    setLightbox((s) => {
+      if (s === null || s.items.length < 2) return s
+      const nextIndex = (s.index + 1) % s.items.length
+      return { ...s, index: nextIndex }
+    })
+  }, [])
+
   return (
     <main
-      className="min-h-screen -mt-16 pt-16 relative overflow-hidden"
-      style={{
-        minHeight: "100vh",
-        backgroundColor: "#FDFCF9",
-      }}
+      className="gallery-page-root relative -mt-16 min-h-screen !overflow-visible pt-16"
+      style={{ backgroundColor: ALABASTER, overflow: "visible" }}
     >
-      {/* Same source as About hero — zoomed + blurred so gallery feels soft, not flat */}
-      <div
-        className="fixed inset-0 overflow-hidden pointer-events-none"
-        style={{ zIndex: 0 }}
-        aria-hidden
-      >
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          src="/studio-process.mp4"
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            width: "120vw",
-            height: "120vh",
-            minWidth: "100%",
-            minHeight: "100%",
-            transform: "translate(-50%, -50%) scale(1.12)",
-            objectFit: "cover",
-            objectPosition: "center",
-            filter: "blur(6px)",
-            WebkitFilter: "blur(6px)",
-            opacity: 1,
-          }}
-        />
-      </div>
-      <div
-        className="fixed inset-0 pointer-events-none"
-        style={{
-          zIndex: 1,
-          background: "rgba(253,252,249,0.62)",
-          backdropFilter: "blur(2px)",
-          WebkitBackdropFilter: "blur(2px)",
-        }}
-        aria-hidden
-      />
-      <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-10 py-16 md:py-24">
+      {/* Frame lives in root layout (GalleryFrame) so it doesn’t flicker on route changes */}
+      {/* Sits above the frame (z-100); below sticky nav (also z-110) in normal flow */}
+      <header className="relative z-[110] mx-auto max-w-[1400px] px-10 pb-10 pt-[80px] text-center sm:px-12 md:px-16 md:pb-12">
         <p
-          className="text-[10px] tracking-[0.5em] uppercase text-[#4A453E] mb-2"
+          className="mb-2 text-[10px] uppercase tracking-[0.5em] text-[#141414]"
           style={{ fontFamily: "Optima, var(--font-cormorant), Georgia, serif" }}
         >
           Portfolio
         </p>
         <h1
-          className="text-3xl md:text-4xl font-light text-[#1A1A1A] mb-20"
-          style={{ fontFamily: "var(--font-cormorant), Georgia, serif" }}
+          className="text-6xl font-normal capitalize leading-none text-[#141414] md:text-7xl lg:text-8xl"
+          style={{
+            fontFamily: "var(--font-calligraphy), 'Allura', cursive",
+            letterSpacing: "0.02em",
+          }}
         >
           Gallery
         </h1>
+      </header>
 
-        <section className="mb-24">
-          <h2
-            className="text-[10px] tracking-[0.45em] uppercase text-[#4A453E] mb-10"
-            style={{ fontFamily: "Optima, var(--font-cormorant), Georgia, serif" }}
-          >
-            Nail Art
-          </h2>
-          <VaultGrid items={NAIL_ART_ITEMS} />
+      <div
+        className="relative z-10 mx-auto max-w-[1400px] !overflow-visible px-10 pb-[calc(6rem+40px)] pt-0 sm:px-12 sm:pb-28 md:px-16"
+        style={{ overflow: "visible" }}
+      >
+        <section
+          id="gallery-nail-art"
+          className="relative mt-10 mb-[150px] flex w-full flex-col items-center justify-center !overflow-visible md:mt-12"
+          style={{ overflow: "visible" }}
+        >
+          <SectionVideoBackdrop src={VIDEO_FLOWER} />
+          <div className="relative z-10 flex w-full flex-col items-center justify-center">
+            <CardStack
+              title="Nail art"
+              items={NAIL_ITEMS}
+              onOpen={open}
+              headingInsetClass="pl-[10%]"
+            />
+          </div>
         </section>
 
-        <section className="mb-24">
-          <h2
-            className="text-[10px] tracking-[0.45em] uppercase text-[#4A453E] mb-10"
-            style={{ fontFamily: "Optima, var(--font-cormorant), Georgia, serif" }}
-          >
-            Individual Nail Art
-          </h2>
-          <VaultGrid items={INDIVIDUAL_NAIL_ART_ITEMS} />
+        <section
+          id="gallery-individual"
+          className="relative mb-[150px] flex w-full flex-col items-center justify-center !overflow-visible"
+          style={{ overflow: "visible" }}
+        >
+          <SectionVideoBackdrop src={VIDEO_2} />
+          <div className="relative z-10 flex w-full flex-col items-center justify-center">
+            <CardStack title="Individual art" items={INDIVIDUAL_ITEMS} onOpen={open} />
+          </div>
         </section>
 
-        <section>
-          <h2
-            className="text-[10px] tracking-[0.45em] uppercase text-[#4A453E] mb-10"
-            style={{ fontFamily: "Optima, var(--font-cormorant), Georgia, serif" }}
-          >
-            Fine Art
-          </h2>
-          <VaultGrid items={FINE_ART_ITEMS} />
+        <section
+          id="gallery-fine-art"
+          className="relative flex w-full flex-col items-center justify-center !overflow-visible pb-6"
+          style={{ overflow: "visible" }}
+        >
+          <SectionVideoBackdrop src={VIDEO_2} />
+          <div className="relative z-10 flex w-full flex-col items-center justify-center">
+            <CardStack title="Fine art" items={FINE_ITEMS} onOpen={open} />
+          </div>
         </section>
       </div>
+
+      <LightboxGallery
+        state={lightbox}
+        onClose={() => setLightbox(null)}
+        onPrev={goPrev}
+        onNext={goNext}
+      />
     </main>
   )
 }

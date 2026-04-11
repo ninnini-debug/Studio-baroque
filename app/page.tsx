@@ -1,96 +1,8 @@
 import Link from "next/link"
+import { PriceCategoryHeader, PriceMenuDisclaimer, PriceMenuRow } from "@/components/price-menu-parts"
+import { PRICES_MENU } from "@/lib/prices-menu"
 
 const CHARCOAL = "#1A1A1A"
-
-type PriceItem = {
-  name: string
-  price: string
-  note?: string
-}
-
-const PRICES: Array<{
-  category: "Acrylics" | "Gel & Gel X" | "Nail Art"
-  items: PriceItem[]
-}> = [
-  {
-    category: "Acrylics",
-    items: [
-      { name: "Full Set", price: "£—" },
-      { name: "Infill", price: "£—" },
-      { name: "Removal", price: "£—" },
-    ],
-  },
-  {
-    category: "Gel & Gel X",
-    items: [
-      { name: "Gel Manicure", price: "£—" },
-      { name: "Gel X", price: "£—" },
-      { name: "Removal", price: "£—" },
-    ],
-  },
-  {
-    category: "Nail Art",
-    items: [
-      { name: "Simple Art (per nail)", price: "£—" },
-      { name: "Detailed Art (per nail)", price: "£—" },
-      { name: "Charms / 3D (from)", price: "£—" },
-    ],
-  },
-]
-
-function CategoryHeader({ title }: { title: string }) {
-  return (
-    <h2
-      className="text-[11px] md:text-[12px] tracking-[0.45em] uppercase text-center font-semibold"
-      style={{
-        fontFamily: "Optima, var(--font-cormorant), Georgia, serif",
-        color: CHARCOAL,
-        letterSpacing: "0.45em",
-      }}
-    >
-      {title}
-    </h2>
-  )
-}
-
-function PriceRow({ item }: { item: PriceItem }) {
-  const shiftRight =
-    item.name === "Full Set" ||
-    item.name === "Infill" ||
-    item.name === "Removal" ||
-    item.name === "Gel Manicure" ||
-    item.name === "Gel X" ||
-    item.name === "Simple Art (per nail)" ||
-    item.name === "Detailed Art (per nail)" ||
-    item.name === "Charms / 3D (from)"
-  return (
-    <div className="py-4">
-      <div className="flex items-baseline justify-between gap-6">
-        <div
-          className="text-[16px] md:text-[17px] leading-snug"
-          style={{
-            fontFamily: "var(--font-cormorant), Georgia, serif",
-            color: CHARCOAL,
-            paddingLeft: shiftRight ? 8 : undefined,
-          }}
-        >
-          {item.name}
-        </div>
-        <div
-          className="text-[13px] md:text-[14px] tracking-[0.12em] whitespace-nowrap"
-          style={{ fontFamily: "var(--font-cormorant), Georgia, serif", color: CHARCOAL, letterSpacing: "0.12em" }}
-        >
-          {item.price}
-        </div>
-      </div>
-      {item.note ? (
-        <div className="mt-2 text-[12px] opacity-75" style={{ fontFamily: "var(--font-cormorant), Georgia, serif", color: CHARCOAL }}>
-          {item.note}
-        </div>
-      ) : null}
-    </div>
-  )
-}
 
 export default function HomePage() {
   return (
@@ -182,33 +94,31 @@ export default function HomePage() {
           }}
           aria-hidden
         >
-          {/* Framed inset — ladybug fills the inner border only */}
+          {/* Framed inset — photo above vignette layer */}
           <div
-            className="absolute overflow-hidden border border-[#8D8679]"
+            className="absolute z-10 overflow-hidden border border-[#8D8679]"
             style={{
-              top: "1.5rem",
-              right: "1.5rem",
-              bottom: "1.5rem",
-              left: "1.5rem",
+              top: 0,
+              right: 0,
+              bottom: 0,
+              left: 0,
             }}
           >
-            <img
-              src="/ladybug.jpg"
-              alt=""
-              className="pointer-events-none select-none"
+            {/* cover = fills frame; fixed = image stays put while page scrolls (clipped to this box) */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0"
               style={{
-                position: "absolute",
-                inset: 0,
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                objectPosition: "center bottom",
+                backgroundImage: "url(/ladybug2.jpg)",
+                backgroundSize: "cover",
+                backgroundPosition: "center 38%",
+                backgroundRepeat: "no-repeat",
+                backgroundAttachment: "fixed",
               }}
-              draggable={false}
             />
           </div>
           <div
-            className="pointer-events-none absolute inset-0"
+            className="pointer-events-none absolute inset-0 z-0"
             style={{
               backgroundColor: "rgba(0, 0, 0, 0.12)",
               boxShadow: "inset 0 0 110px rgba(0,0,0,0.35)",
@@ -224,7 +134,8 @@ export default function HomePage() {
         style={{
           zIndex: 3,
           background: "transparent",
-          scrollMarginTop: "7rem",
+          /* Nav clearance + 40px alabaster frame (matches gallery border rhythm) */
+          scrollMarginTop: "calc(7rem + 40px)",
         }}
       >
         <div
@@ -253,7 +164,7 @@ export default function HomePage() {
           </div>
 
           <div className="space-y-24">
-            {PRICES.map((section) => (
+            {PRICES_MENU.map((section) => (
               <section key={section.category} className="space-y-6">
                 <div
                   className="px-7 py-8 md:px-12 md:py-10"
@@ -265,7 +176,7 @@ export default function HomePage() {
                   }}
                 >
                   <div className="mb-6">
-                    <CategoryHeader title={section.category} />
+                    <PriceCategoryHeader title={section.category} color={CHARCOAL} />
                   </div>
 
                   <div style={{ border: "1px solid rgba(141, 134, 121, 0.35)", maxWidth: 560, margin: "0 auto" }}>
@@ -278,7 +189,7 @@ export default function HomePage() {
                             : undefined
                         }
                       >
-                        <PriceRow item={item} />
+                        <PriceMenuRow item={item} color={CHARCOAL} />
                       </div>
                     ))}
                   </div>
@@ -286,6 +197,8 @@ export default function HomePage() {
               </section>
             ))}
           </div>
+
+          <PriceMenuDisclaimer color={CHARCOAL} />
         </div>
       </section>
     </main>
