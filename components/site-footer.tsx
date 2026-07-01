@@ -35,7 +35,7 @@ export function SiteFooter() {
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="mt-2.5 cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.1em] text-[#9A8562] transition-all duration-300 hover:text-[#B8956A] hover:underline underline-offset-[3px]"
+          className="mt-2.5 cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.1em] text-[#2A2622] transition-all duration-300 hover:text-[#1A1A1A] hover:underline underline-offset-[3px]"
           style={{
             fontFamily: "var(--font-cormorant), Georgia, serif",
             letterSpacing: "0.1em",
