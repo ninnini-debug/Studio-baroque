@@ -19,10 +19,10 @@ export const PRICES_MENU: PriceSection[] = [
     ],
   },
   {
-    category: "Gel & Gel X",
+    category: "Gel & Regular Polish",
     items: [
       { name: "Gel Manicure", price: "£30—" },
-      { name: "Gel X (Extensions)", price: "£45—" },
+      { name: "Regular Polish", price: "£5—" },
       { name: "Removal", price: "£10—" },
     ],
   },
@@ -41,7 +41,7 @@ const SHIFT_NAMES = new Set([
   "Infill",
   "Removal",
   "Gel Manicure",
-  "Gel X (Extensions)",
+  "Regular Polish",
   "Simple Art (per nail)",
   "Detailed Art (per nail)",
   "Charms / 3D (from)",

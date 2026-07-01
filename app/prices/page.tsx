@@ -1,4 +1,4 @@
-import { PriceCategoryHeader, PriceMenuDisclaimer, PriceMenuRow } from "@/components/price-menu-parts"
+import { PriceMenuDisclaimer, PriceMenuSection } from "@/components/price-menu-parts"
 import { PRICES_MENU } from "@/lib/prices-menu"
 
 const IVORY = "#1A1A1A"
@@ -40,8 +40,8 @@ export default function PricesPage() {
         }}
         aria-hidden
       />
-      <div className="relative z-10 mx-auto max-w-3xl px-6 py-16 md:px-10 md:py-24">
-        <div className="mb-16 flex flex-col items-center">
+        <div className="relative z-10 mx-auto max-w-3xl px-6 py-16 md:px-10 md:py-24">
+        <div className="prices-menu-hero mb-16 flex flex-col items-center">
           <p
             className="mb-3 text-[10px] uppercase tracking-[0.5em] text-center"
             style={{ fontFamily: "Optima, var(--font-cormorant), Georgia, serif", color: IVORY, letterSpacing: "0.5em" }}
@@ -58,38 +58,9 @@ export default function PricesPage() {
           </h1>
         </div>
 
-        <div className="space-y-24">
+        <div className="space-y-16 md:space-y-20">
           {PRICES_MENU.map((section) => (
-            <section key={section.category} className="space-y-6">
-              <div
-                className="px-7 py-8 md:px-12 md:py-10"
-                style={{
-                  backgroundColor: "rgba(253, 252, 249, 0.7)",
-                  border: "1px solid #8D8679",
-                  backdropFilter: "blur(10px)",
-                  WebkitBackdropFilter: "blur(10px)",
-                }}
-              >
-                <div className="mb-6">
-                  <PriceCategoryHeader title={section.category} color={IVORY} />
-                </div>
-
-                <div style={{ border: "1px solid rgba(141, 134, 121, 0.35)", maxWidth: 560, margin: "0 auto" }}>
-                  {section.items.map((item, idx) => (
-                    <div
-                      key={`${section.category}-${item.name}`}
-                      style={
-                        idx < section.items.length - 1
-                          ? { borderBottom: "1px solid rgba(141, 134, 121, 0.3)" }
-                          : undefined
-                      }
-                    >
-                      <PriceMenuRow item={item} color={IVORY} />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
+            <PriceMenuSection key={section.category} section={section} color={IVORY} />
           ))}
         </div>
 

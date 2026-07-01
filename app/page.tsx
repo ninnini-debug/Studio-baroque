@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { PriceCategoryHeader, PriceMenuDisclaimer, PriceMenuRow } from "@/components/price-menu-parts"
+import { PriceMenuDisclaimer, PriceMenuSection } from "@/components/price-menu-parts"
 import { PRICES_MENU } from "@/lib/prices-menu"
 
 const CHARCOAL = "#1A1A1A"
@@ -7,7 +7,7 @@ const CHARCOAL = "#1A1A1A"
 export default function HomePage() {
   return (
     <main
-      className="relative w-full overflow-y-auto"
+      className="home-page-root relative w-full overflow-y-auto"
       style={{ minHeight: "200vh", background: "transparent" }}
     >
       {/* Full-screen video background */}
@@ -130,23 +130,14 @@ export default function HomePage() {
 
       <section
         id="prices-section"
-        className="relative"
+        className="prices-section-root relative"
         style={{
           zIndex: 3,
-          background: "transparent",
-          /* Nav clearance + 40px alabaster frame (matches gallery border rhythm) */
           scrollMarginTop: "calc(7rem + 40px)",
         }}
       >
-        <div
-          className="absolute top-0 left-0 right-0 h-40 pointer-events-none"
-          style={{
-            background: "linear-gradient(to bottom, rgba(253,252,249,0) 0%, rgba(253,252,249,0.12) 100%)",
-          }}
-          aria-hidden
-        />
-        <div className="relative z-10 max-w-3xl mx-auto px-6 md:px-10 pt-16 md:pt-24 pb-20 md:pb-28">
-          <div className="flex flex-col items-center mb-16">
+        <div className="prices-section-content max-w-3xl mx-auto px-6 md:px-10 pt-16 md:pt-24 pb-20 md:pb-28">
+          <div className="prices-menu-hero mb-16 flex flex-col items-center">
             <p
               className="text-[10px] tracking-[0.5em] uppercase text-center mb-3"
               style={{ fontFamily: "Optima, var(--font-cormorant), Georgia, serif", color: CHARCOAL, letterSpacing: "0.5em" }}
@@ -163,38 +154,9 @@ export default function HomePage() {
             </h2>
           </div>
 
-          <div className="space-y-24">
+          <div className="space-y-16 md:space-y-20">
             {PRICES_MENU.map((section) => (
-              <section key={section.category} className="space-y-6">
-                <div
-                  className="px-7 py-8 md:px-12 md:py-10"
-                  style={{
-                    backgroundColor: "rgba(253, 252, 249, 0.7)",
-                    border: "1px solid #8D8679",
-                    backdropFilter: "blur(10px)",
-                    WebkitBackdropFilter: "blur(10px)",
-                  }}
-                >
-                  <div className="mb-6">
-                    <PriceCategoryHeader title={section.category} color={CHARCOAL} />
-                  </div>
-
-                  <div style={{ border: "1px solid rgba(141, 134, 121, 0.35)", maxWidth: 560, margin: "0 auto" }}>
-                    {section.items.map((item, idx) => (
-                      <div
-                        key={`${section.category}-${item.name}`}
-                        style={
-                          idx < section.items.length - 1
-                            ? { borderBottom: "1px solid rgba(141, 134, 121, 0.3)" }
-                            : undefined
-                        }
-                      >
-                        <PriceMenuRow item={item} color={CHARCOAL} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </section>
+              <PriceMenuSection key={section.category} section={section} color={CHARCOAL} />
             ))}
           </div>
 

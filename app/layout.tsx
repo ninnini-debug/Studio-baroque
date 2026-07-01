@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Allura, Pinyon_Script, Cinzel } from 'next/font/goo
 import { Analytics } from '@vercel/analytics/next'
 import { GalleryFrame } from '@/components/gallery-frame'
 import { ScrollToTop } from '@/components/scroll-to-top'
+import { SiteFooter } from '@/components/site-footer'
 import { StickyNav } from '@/components/sticky-nav'
 import './globals.css'
 
@@ -31,7 +32,7 @@ const cinzel = Cinzel({
 })
 
 export const metadata: Metadata = {
-  title: 'Studio Baroque | Nail Artistry by Nina',
+  title: 'StudioBaroqueNails | Bespoke Nail Artistry',
   description: 'Bespoke nail artistry in West London. Where classical elegance meets modern beauty. Acrylics, gel, and custom nail art by Nina.',
   generator: 'v0.app',
   icons: {
@@ -60,12 +61,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${cormorant.variable} ${allura.variable} ${pinyon.variable} ${cinzel.variable} font-sans antialiased bg-[#050808]`}>
+      <body className={`${cormorant.variable} ${allura.variable} ${pinyon.variable} ${cinzel.variable} font-sans antialiased`}>
         <StickyNav />
         <GalleryFrame />
         <ScrollToTop />
         <div className="main-content">
           {children}
+          <SiteFooter />
         </div>
         <Analytics />
       </body>

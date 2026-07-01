@@ -7,12 +7,28 @@ import {
   type FanItem,
   type GalleryOpenDetail,
 } from "@/components/gallery-fan-stack"
+import { GALLERY_HEADER_GREY } from "@/lib/gallery-theme"
 
-const ALABASTER = "#FDFCF9"
-
-/** URL-encoded paths in /public */
+const HOME_VIDEO = "/video.mp4"
 const VIDEO_FLOWER = "/flower%20video.mp4"
 const VIDEO_2 = "/Video%202.mp4"
+
+function GalleryAtmosphere() {
+  return (
+    <div className="gallery-atmosphere pointer-events-none fixed inset-0 z-0" aria-hidden>
+      <video
+        className="absolute inset-0 h-full w-full object-cover"
+        src={HOME_VIDEO}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+      />
+      <div className="absolute inset-0 bg-[#FDFCF9]/50 backdrop-blur-[10px]" />
+    </div>
+  )
+}
 
 function SectionVideoBackdrop({ src }: { src: string }) {
   return (
@@ -41,11 +57,11 @@ const INDIVIDUAL_SRC = [
   "/individual%20nail%20art%203.jpg",
 ] as const
 
-const FINE_ART_FLOWERS: { id: string; src: string; title: string }[] = [
+const FINE_ART_FLOWERS = [
   { id: "f1", src: "/fine-art-2.PNG", title: "Vase & Bloom" },
   { id: "f2", src: "/fine-art-2.jpg", title: "Still Life" },
   { id: "f3", src: "/fine-art-3.PNG", title: "Portrait" },
-]
+] as const
 
 const NAIL_ITEMS: readonly [FanItem, FanItem, FanItem] = [
   { src: NAIL_ART_SRC[0], alt: "Nail art 3" },
@@ -99,8 +115,7 @@ function LightboxGallery({
 
   const { items, index } = state
   const src = items[index]
-  const n = items.length
-  const label = `${index + 1} / ${n}`
+  const label = `${index + 1} / ${items.length}`
 
   return (
     <div
@@ -148,12 +163,7 @@ function LightboxGallery({
         </button>
 
         <div className="flex min-h-0 min-w-0 flex-1 items-center justify-center">
-          <img
-            key={src}
-            src={src}
-            alt=""
-            className="max-h-[85vh] w-auto max-w-full object-contain"
-          />
+          <img key={src} src={src} alt="" className="max-h-[85vh] w-auto max-w-full object-contain" />
         </div>
 
         <button
@@ -182,93 +192,85 @@ export default function GalleryPage() {
   const goPrev = useCallback(() => {
     setLightbox((s) => {
       if (s === null || s.items.length < 2) return s
-      const nextIndex = (s.index - 1 + s.items.length) % s.items.length
-      return { ...s, index: nextIndex }
+      return { ...s, index: (s.index - 1 + s.items.length) % s.items.length }
     })
   }, [])
 
   const goNext = useCallback(() => {
     setLightbox((s) => {
       if (s === null || s.items.length < 2) return s
-      const nextIndex = (s.index + 1) % s.items.length
-      return { ...s, index: nextIndex }
+      return { ...s, index: (s.index + 1) % s.items.length }
     })
   }, [])
 
   return (
-    <main
-      className="gallery-page-root relative -mt-16 min-h-screen !overflow-visible pt-16"
-      style={{ backgroundColor: ALABASTER, overflow: "visible" }}
-    >
-      {/* Frame lives in root layout (GalleryFrame) so it doesn’t flicker on route changes */}
-      {/* Sits above the frame (z-100); below sticky nav (also z-110) in normal flow */}
-      <header className="relative z-[110] mx-auto max-w-[1400px] px-10 pb-10 pt-[80px] text-center sm:px-12 md:px-16 md:pb-12">
-        <p
-          className="mb-2 text-[10px] uppercase tracking-[0.5em] text-[#141414]"
-          style={{ fontFamily: "Optima, var(--font-cormorant), Georgia, serif" }}
-        >
-          Portfolio
-        </p>
-        <h1
-          className="text-6xl font-normal capitalize leading-none text-[#141414] md:text-7xl lg:text-8xl"
-          style={{
-            fontFamily: "var(--font-calligraphy), 'Allura', cursive",
-            letterSpacing: "0.02em",
-          }}
-        >
-          Gallery
-        </h1>
-      </header>
+    <>
+      <GalleryAtmosphere />
 
-      <div
-        className="relative z-10 mx-auto max-w-[1400px] !overflow-visible px-10 pb-[calc(6rem+40px)] pt-0 sm:px-12 sm:pb-28 md:px-16"
-        style={{ overflow: "visible" }}
-      >
-        <section
-          id="gallery-nail-art"
-          className="relative mt-10 mb-[150px] flex w-full flex-col items-center justify-center !overflow-visible md:mt-12"
-          style={{ overflow: "visible" }}
+      <main className="gallery-page-root relative z-[2] min-h-screen w-full overflow-visible bg-transparent">
+        {/* Unified header — nav (layout) + title share GALLERY_HEADER_GREY via CSS */}
+        <header
+          className="gallery-page-header w-full max-w-none"
+          style={{ backgroundColor: GALLERY_HEADER_GREY }}
         >
-          <SectionVideoBackdrop src={VIDEO_FLOWER} />
-          <div className="relative z-10 flex w-full flex-col items-center justify-center">
-            <CardStack
-              title="Nail art"
-              items={NAIL_ITEMS}
-              onOpen={open}
-              headingInsetClass="pl-[10%]"
-            />
+          <div className="mx-auto max-w-[1400px] px-10 pb-10 pt-[4.5rem] text-center sm:px-12 md:px-16 md:pb-12 md:pt-24">
+            <p
+              className="mb-2 text-[10px] uppercase tracking-[0.5em] text-[#141414]"
+              style={{ fontFamily: "Optima, var(--font-cormorant), Georgia, serif" }}
+            >
+              Portfolio
+            </p>
+            <h1
+              className="text-6xl font-normal capitalize leading-none text-[#141414] md:text-7xl lg:text-8xl"
+              style={{
+                fontFamily: "var(--font-calligraphy), 'Allura', cursive",
+                letterSpacing: "0.02em",
+              }}
+            >
+              Gallery
+            </h1>
           </div>
-        </section>
+        </header>
 
-        <section
-          id="gallery-individual"
-          className="relative mb-[150px] flex w-full flex-col items-center justify-center !overflow-visible"
-          style={{ overflow: "visible" }}
-        >
-          <SectionVideoBackdrop src={VIDEO_2} />
-          <div className="relative z-10 flex w-full flex-col items-center justify-center">
-            <CardStack title="Individual art" items={INDIVIDUAL_ITEMS} onOpen={open} />
-          </div>
-        </section>
+        <div className="relative mx-auto max-w-[1400px] overflow-visible px-10 pb-24 pt-0 sm:px-12 sm:pb-28 md:px-16">
+          <section
+            id="gallery-nail-art"
+            className="relative mb-[150px] mt-10 flex w-full flex-col items-center justify-center overflow-visible md:mt-12"
+          >
+            <SectionVideoBackdrop src={VIDEO_FLOWER} />
+            <div className="relative z-10 flex w-full flex-col items-center justify-center">
+              <CardStack title="Nail art" items={NAIL_ITEMS} onOpen={open} headingInsetClass="pl-[10%]" />
+            </div>
+          </section>
 
-        <section
-          id="gallery-fine-art"
-          className="relative flex w-full flex-col items-center justify-center !overflow-visible pb-6"
-          style={{ overflow: "visible" }}
-        >
-          <SectionVideoBackdrop src={VIDEO_2} />
-          <div className="relative z-10 flex w-full flex-col items-center justify-center">
-            <CardStack title="Fine art" items={FINE_ITEMS} onOpen={open} />
-          </div>
-        </section>
-      </div>
+          <section
+            id="gallery-individual"
+            className="relative mb-[150px] flex w-full flex-col items-center justify-center overflow-visible"
+          >
+            <SectionVideoBackdrop src={VIDEO_2} />
+            <div className="relative z-10 flex w-full flex-col items-center justify-center">
+              <CardStack title="Individual art" items={INDIVIDUAL_ITEMS} onOpen={open} />
+            </div>
+          </section>
 
-      <LightboxGallery
-        state={lightbox}
-        onClose={() => setLightbox(null)}
-        onPrev={goPrev}
-        onNext={goNext}
-      />
-    </main>
+          <section
+            id="gallery-fine-art"
+            className="relative flex w-full flex-col items-center justify-center overflow-visible pb-6"
+          >
+            <SectionVideoBackdrop src={VIDEO_2} />
+            <div className="relative z-10 flex w-full flex-col items-center justify-center">
+              <CardStack title="Fine art" items={FINE_ITEMS} onOpen={open} />
+            </div>
+          </section>
+        </div>
+
+        <LightboxGallery
+          state={lightbox}
+          onClose={() => setLightbox(null)}
+          onPrev={goPrev}
+          onNext={goNext}
+        />
+      </main>
+    </>
   )
 }

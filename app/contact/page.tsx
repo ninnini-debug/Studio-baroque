@@ -2,14 +2,16 @@
 
 import type { CSSProperties, FormEvent } from "react"
 import { useRef, useState } from "react"
+import { PageEditorialHeader } from "@/components/editorial/page-header"
+import { StudioDetails } from "@/components/editorial/studio-details"
+import { EDITORIAL } from "@/lib/editorial-theme"
 
 const FORMSPREE_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID
 
-const CREAM = "#FDFCF9"
-const INK = "#1A1A1A"
-const GOLD = "#C9A962"
-const MUTED = "#4A453E"
-const BORDER_TAUPE = "#9C968C"
+const CREAM = EDITORIAL.cream
+const INK = EDITORIAL.ink
+const MUTED = EDITORIAL.muted
+const BORDER_TAUPE = EDITORIAL.borderTaupe
 
 const FLOWER_BG = "/fine-art-3.PNG"
 
@@ -28,16 +30,36 @@ const fieldStyle: CSSProperties = {
   borderBottomColor: BORDER_TAUPE,
 }
 
+/** Monday–Friday only (local calendar date). */
+function isWeekdayDate(dateStr: string): boolean {
+  if (!dateStr) return true
+  const d = new Date(`${dateStr}T12:00:00`)
+  const day = d.getDay()
+  return day !== 0 && day !== 6
+}
+
+const APPOINTMENT_NOTE =
+  "*By appointment only. Appointments are strictly allocated within these hours to ensure dedicated, bespoke time for each client."
+
 export default function ContactPage() {
   const [sent, setSent] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [dateError, setDateError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const dateInputRef = useRef<HTMLInputElement>(null)
   const [fileLabel, setFileLabel] = useState<string | null>(null)
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setSubmitError(null)
+
+    const preferredDate = dateInputRef.current?.value ?? ""
+    if (preferredDate && !isWeekdayDate(preferredDate)) {
+      setDateError("Please choose a weekday (Monday–Friday). The studio is closed on weekends.")
+      dateInputRef.current?.focus()
+      return
+    }
 
     if (!FORMSPREE_FORM_ID?.trim()) {
       setSubmitError(
@@ -61,6 +83,7 @@ export default function ContactPage() {
       if (res.ok) {
         form.reset()
         setFileLabel(null)
+        setDateError(null)
         setSent(true)
         return
       }
@@ -95,70 +118,16 @@ export default function ContactPage() {
       />
       <div className="relative z-10 mx-auto max-w-6xl px-6 pb-24 pt-10 md:px-10 md:pb-32 md:pt-14">
         {/* Intro — full width above the two-column block */}
-        <div className="mb-10 max-w-2xl md:mb-14">
-          <p
-            className="mb-4 text-[10px] tracking-[0.5em] uppercase"
-            style={{ fontFamily: "var(--font-sans)", color: GOLD }}
-          >
-            Enquiries
-          </p>
-          <h1
-            className="mb-6 text-5xl font-normal leading-none md:text-6xl lg:text-7xl"
-            style={{
-              fontFamily: "var(--font-calligraphy), 'Allura', cursive",
-              letterSpacing: "0.02em",
-            }}
-          >
-            Let&apos;s talk nails
-          </h1>
-          <p
-            className="max-w-md text-[16px] leading-relaxed md:text-[17px]"
-            style={{ fontFamily: "var(--font-cormorant), Georgia, serif", color: MUTED }}
-          >
-            Share your ideas, preferred dates, and any inspiration — I read every message and reply as soon as I can.
-          </p>
-        </div>
+        <PageEditorialHeader
+          className="mb-10 md:mb-14"
+          eyebrow="Enquiries"
+          title="Let's talk nails"
+          titleStyle="script"
+          description="Share your ideas, preferred dates, and any inspiration — I read every message and reply as soon as I can."
+        />
 
         <div className="grid gap-14 lg:grid-cols-12 lg:items-start lg:gap-16">
-          {/* Left: Studio + reply — top-aligned with form */}
-          <div className="lg:col-span-5">
-            <dl className="space-y-6 border-t border-solid pt-0" style={{ borderTopColor: `${BORDER_TAUPE}99` }}>
-              <div className="pt-10">
-                <dt className="mb-1 text-[9px] tracking-[0.42em] uppercase" style={labelStyle}>
-                  Studio
-                </dt>
-                <dd
-                  className="space-y-1 text-[15px] leading-snug"
-                  style={{ fontFamily: "var(--font-cormorant), Georgia, serif" }}
-                >
-                  <p>West London · by appointment</p>
-                  <p className="text-[14px] text-[#4A453E]">Near Uxbridge station (Tube)</p>
-                </dd>
-              </div>
-              <div>
-                <dt className="mb-1 text-[9px] tracking-[0.42em] uppercase" style={labelStyle}>
-                  Reply time
-                </dt>
-                <dd
-                  className="text-[15px] leading-snug"
-                  style={{ fontFamily: "var(--font-cormorant), Georgia, serif" }}
-                >
-                  Usually within 48 hours
-                </dd>
-              </div>
-            </dl>
-            <p
-              className="mt-8 border-t border-solid pt-8 text-[13px] leading-relaxed md:text-[14px]"
-              style={{
-                fontFamily: "var(--font-cormorant), Georgia, serif",
-                color: MUTED,
-                borderTopColor: `${BORDER_TAUPE}99`,
-              }}
-            >
-              Once your request is reviewed, I will reach out via email to finalize the date. The full studio address
-              and entry instructions are provided upon booking confirmation.
-            </p>
-          </div>
+          <StudioDetails className="lg:col-span-5" />
 
           {/* Form */}
           <div className="relative lg:col-span-7">
@@ -194,6 +163,12 @@ export default function ContactPage() {
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <input type="hidden" name="_subject" value="Studio Baroque — Booking enquiry" />
+                  <p
+                    className="pb-2 text-[13px] italic leading-relaxed md:text-[14px]"
+                    style={{ fontFamily: "var(--font-cormorant), Georgia, serif", color: MUTED }}
+                  >
+                    {APPOINTMENT_NOTE}
+                  </p>
                   <div className="grid gap-6 sm:grid-cols-2">
                     <div>
                       <label htmlFor="contact-name" className={labelClass} style={labelStyle}>
@@ -248,12 +223,42 @@ export default function ContactPage() {
                         Preferred date
                       </label>
                       <input
+                        ref={dateInputRef}
                         id="contact-date"
                         name="preferred_date"
                         type="date"
                         className={`${fieldLine} min-h-[2.75rem] cursor-pointer [color-scheme:light]`}
                         style={fieldStyle}
+                        onChange={(e) => {
+                          const value = e.target.value
+                          if (value && !isWeekdayDate(value)) {
+                            e.target.value = ""
+                            setDateError("Weekends are not available — please select Monday through Friday.")
+                            return
+                          }
+                          setDateError(null)
+                          e.target.setCustomValidity("")
+                        }}
+                        onInvalid={(e) => {
+                          e.preventDefault()
+                          const el = e.currentTarget
+                          if (el.value && !isWeekdayDate(el.value)) {
+                            setDateError("Weekends are not available — please select Monday through Friday.")
+                          }
+                        }}
+                        aria-describedby={dateError ? "contact-date-error" : undefined}
+                        aria-invalid={dateError ? true : undefined}
                       />
+                      {dateError ? (
+                        <p
+                          id="contact-date-error"
+                          className="mt-2 text-[12px] leading-relaxed"
+                          style={{ fontFamily: "var(--font-cormorant), Georgia, serif", color: INK }}
+                          role="alert"
+                        >
+                          {dateError}
+                        </p>
+                      ) : null}
                     </div>
                     <div>
                       <label htmlFor="contact-time" className={labelClass} style={labelStyle}>
@@ -263,7 +268,7 @@ export default function ContactPage() {
                         id="contact-time"
                         name="preferred_time_note"
                         type="text"
-                        placeholder="e.g. after 6pm, morning"
+                        placeholder="e.g. 12pm, early afternoon"
                         className={fieldLine}
                         style={fieldStyle}
                       />

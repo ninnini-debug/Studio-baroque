@@ -40,11 +40,14 @@
     padding: 0;
     min-height: 100vh;
     overflow-y: auto;
-    background: transparent;
+    background: #050808;
     scroll-behavior: auto;
     color: #1A1A1A;
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+  }
+  body:has(.home-page-root) {
+    background: #050808 !important;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-cormorant), Georgia, serif;
@@ -63,19 +66,73 @@
   overflow: visible;
 }
 
-/* Gallery: stacked fan must not be clipped by html or main-content */
+/* Gallery page */
 html:has(.gallery-page-root),
 body:has(.gallery-page-root) {
   overflow-x: visible !important;
+  background: transparent !important;
 }
+
 .main-content:has(.gallery-page-root) {
+  padding-top: 0;
   overflow: visible !important;
-  overflow-x: visible !important;
+  width: 100%;
+  max-width: none;
+  background: transparent !important;
+}
+
+/* Unified header grey — nav (layout) + PORTFOLIO/Gallery title block */
+body:has(.gallery-page-root) #main-site-nav,
+body:has(.gallery-page-root) .gallery-page-header {
+  background-color: #edebe6 !important;
+  background: #edebe6 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.gallery-page-header {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+body:has(.gallery-page-root) .site-footer {
+  background: transparent !important;
 }
 
 /* Home: section that covers the reveal banner (solid blanket) */
 .cover-up-section {
   background-color: #FDFCF9 !important;
+}
+
+/* Home prices — seamless mist overlay (no gradient band / bg seam through title) */
+#prices-section.prices-section-root {
+  position: relative;
+  isolation: isolate;
+}
+
+#prices-section.prices-section-root::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: rgba(253, 252, 249, 0.78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.prices-section-content {
+  position: relative;
+  z-index: 1;
+}
+
+.prices-menu-hero {
+  position: relative;
+  z-index: 2;
+  isolation: isolate;
 }
 
 /* Home CTA buttons: faint gold/ivory glow on hover or touch */
@@ -215,6 +272,15 @@ body:has(.gallery-page-root) {
   background-color: #fdfcf9 !important;
   opacity: 1 !important;
 }
+.about-cream-curtain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
 .about-page-video-layer {
   position: fixed !important;
   top: 0 !important;
@@ -248,9 +314,15 @@ body:has(.gallery-page-root) {
 .about-bio-misty-inner {
   color: #1a1a1a;
   font-family: var(--font-cormorant), Georgia, serif;
-  font-weight: 800;
-  font-size: clamp(1.5rem, 2.2vw, 1.8rem);
-  line-height: 1.8;
+}
+.about-editorial-body {
+  text-align: center;
+}
+.about-editorial-body p {
+  font-weight: 400;
+  font-size: clamp(1.05rem, 1.65vw, 1.2rem);
+  line-height: 1.85;
+  letter-spacing: 0.01em;
 }
 .about-bio-reveal {
   opacity: 0;

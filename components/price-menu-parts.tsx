@@ -1,28 +1,25 @@
-import type { PriceItem } from "@/lib/prices-menu"
+import type { PriceItem, PriceSection } from "@/lib/prices-menu"
 import { priceRowUsesShiftPadding } from "@/lib/prices-menu"
 
 const DEFAULT_INK = "#1A1A1A"
 
 type PriceCategoryHeaderProps = {
   title: string
-  /** Text / border colour (e.g. home vs /prices) */
+  /** Text colour (e.g. home vs /prices) */
   color?: string
 }
 
 export function PriceCategoryHeader({ title, color = DEFAULT_INK }: PriceCategoryHeaderProps) {
   return (
-    <div className="price-menu-header-satin mx-auto w-full max-w-md px-3 py-2 md:max-w-lg md:px-4">
-      <span className="price-menu-header-satin__shimmer" aria-hidden />
-      <h2
-        className="relative z-[1] text-center text-[10px] font-semibold uppercase leading-snug tracking-[0.32em] sm:text-[11px] sm:tracking-[0.38em] md:text-[12px] md:tracking-[0.45em]"
-        style={{
-          fontFamily: "Optima, var(--font-cormorant), Georgia, serif",
-          color,
-        }}
-      >
-        {title}
-      </h2>
-    </div>
+    <h2
+      className="text-center text-[10px] font-medium uppercase tracking-[0.42em] sm:text-[11px] md:text-[12px] md:tracking-[0.48em]"
+      style={{
+        fontFamily: "Optima, var(--font-cormorant), Georgia, serif",
+        color,
+      }}
+    >
+      {title}
+    </h2>
   )
 }
 
@@ -34,10 +31,10 @@ type PriceMenuRowProps = {
 export function PriceMenuRow({ item, color = DEFAULT_INK }: PriceMenuRowProps) {
   const shiftRight = priceRowUsesShiftPadding(item.name)
   return (
-    <div className="py-4">
-      <div className="flex items-baseline justify-between gap-6">
+    <div className="py-6 md:py-7">
+      <div className="flex items-baseline justify-between gap-8">
         <div
-          className="text-[16px] md:text-[17px] leading-snug"
+          className="text-[16px] leading-snug md:text-[17px]"
           style={{
             fontFamily: "var(--font-cormorant), Georgia, serif",
             color,
@@ -54,11 +51,39 @@ export function PriceMenuRow({ item, color = DEFAULT_INK }: PriceMenuRowProps) {
         </div>
       </div>
       {item.note ? (
-        <div className="mt-2 text-[12px] opacity-75" style={{ fontFamily: "var(--font-cormorant), Georgia, serif", color }}>
+        <div className="mt-2.5 text-[12px] opacity-75" style={{ fontFamily: "var(--font-cormorant), Georgia, serif", color }}>
           {item.note}
         </div>
       ) : null}
     </div>
+  )
+}
+
+type PriceMenuSectionProps = {
+  section: PriceSection
+  color?: string
+}
+
+export function PriceMenuSection({ section, color = DEFAULT_INK }: PriceMenuSectionProps) {
+  return (
+    <section>
+      <div className="mx-auto max-w-xl rounded-sm border border-[#8D8679]/22 bg-white/40 px-8 py-10 backdrop-blur-md md:px-14 md:py-14">
+        <div className="mb-10 md:mb-12">
+          <PriceCategoryHeader title={section.category} color={color} />
+        </div>
+
+        <div className="mx-auto max-w-lg">
+          {section.items.map((item, idx) => (
+            <div
+              key={`${section.category}-${item.name}`}
+              className={idx < section.items.length - 1 ? "border-b border-[#8D8679]/10" : undefined}
+            >
+              <PriceMenuRow item={item} color={color} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   )
 }
 

@@ -8,6 +8,7 @@ import {
   luxuryScrollToHashWhenReady,
   luxuryScrollToY,
 } from "@/lib/luxury-scroll"
+import { GALLERY_HEADER_GREY } from "@/lib/gallery-theme"
 
 const TABS = [
   { label: "Home", href: "/" },
@@ -78,18 +79,26 @@ export function StickyNav() {
     router.push(href, { scroll: false })
   }
 
+  const isGallery = pathname === "/gallery" || pathname.startsWith("/gallery/")
+
   return (
     <nav
       id="main-site-nav"
-      className="fixed top-0 left-0 right-0 z-[110] flex justify-center gap-10 sm:gap-14 py-4 bg-[#FDFCF9]/78"
+      className={`fixed top-0 left-0 right-0 z-[110] flex w-full max-w-none justify-center gap-10 sm:gap-14 py-4 ${
+        isGallery ? "gallery-nav-band" : "bg-[#FDFCF9]/78"
+      }`}
       style={{
-        backdropFilter: "blur(12px)",
-        WebkitBackdropFilter: "blur(12px)",
+        backdropFilter: isGallery ? "none" : "blur(12px)",
+        WebkitBackdropFilter: isGallery ? "none" : "blur(12px)",
+        backgroundColor: isGallery ? GALLERY_HEADER_GREY : undefined,
+        background: isGallery ? GALLERY_HEADER_GREY : undefined,
         margin: 0,
         paddingTop: "1rem",
         paddingBottom: "1rem",
         borderTop: "none",
+        borderBottom: "none",
         outline: "none",
+        boxShadow: "none",
       }}
       role="navigation"
       aria-label="Main"
