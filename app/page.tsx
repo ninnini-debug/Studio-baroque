@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { PriceMenuDisclaimer, PriceMenuSection } from "@/components/price-menu-parts"
+import { RevealWindow } from "@/components/reveal-window"
 import { EDITORIAL } from "@/lib/editorial-theme"
 import { PRICES_MENU } from "@/lib/prices-menu"
 
@@ -76,58 +77,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Reveal-Window — work photo ribbon, fixed background clipped to box */}
-      <section
-        style={{
-          marginTop: 100,
-          marginBottom: 100,
-          position: "relative",
-          zIndex: 10,
-        }}
-        aria-label="Reveal window"
-      >
-        <div
-          className="relative w-full overflow-hidden"
-          style={{
-            height: 450,
-            clipPath: "inset(0 0 0 0)",
-            WebkitClipPath: "inset(0 0 0 0)",
-          }}
-          aria-hidden
-        >
-          {/* Framed inset — photo above vignette layer */}
-          <div
-            className="absolute z-10 overflow-hidden border border-[#8D8679]"
-            style={{
-              top: 0,
-              right: 0,
-              bottom: 0,
-              left: 0,
-            }}
-          >
-            {/* cover = fills frame; fixed = image stays put while page scrolls (clipped to this box) */}
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0"
-              style={{
-                backgroundImage: "url(/ladybug2.jpg)",
-                backgroundSize: "cover",
-                backgroundPosition: "center 38%",
-                backgroundRepeat: "no-repeat",
-                backgroundAttachment: "fixed",
-              }}
-            />
-          </div>
-          <div
-            className="pointer-events-none absolute inset-0 z-0"
-            style={{
-              backgroundColor: "rgba(0, 0, 0, 0.12)",
-              boxShadow: "inset 0 0 110px rgba(0,0,0,0.35)",
-            }}
-            aria-hidden
-          />
-        </div>
-      </section>
+      <RevealWindow />
 
       <section
         id="prices-section"
