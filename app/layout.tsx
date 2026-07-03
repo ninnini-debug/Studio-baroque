@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Cormorant_Garamond, Allura, Pinyon_Script, Cinzel } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { GalleryFrame } from '@/components/gallery-frame'
@@ -30,6 +30,12 @@ const cinzel = Cinzel({
   weight: ["400", "500"],
   variable: "--font-display",
 })
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+}
 
 export const metadata: Metadata = {
   title: 'StudioBaroqueNails | Bespoke Nail Artistry',

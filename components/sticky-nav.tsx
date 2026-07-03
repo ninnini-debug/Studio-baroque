@@ -84,7 +84,7 @@ export function StickyNav() {
   return (
     <nav
       id="main-site-nav"
-      className={`fixed top-0 left-0 right-0 z-[110] flex w-full max-w-none justify-center gap-10 sm:gap-14 py-4 ${
+      className={`fixed top-0 left-0 right-0 z-[110] flex w-full max-w-none flex-wrap items-center justify-center gap-x-3 gap-y-1 px-3 py-3 sm:gap-x-10 sm:gap-y-0 sm:px-4 sm:py-4 md:gap-x-14 ${
         isGallery ? "gallery-nav-band" : "bg-[#FDFCF9]/78"
       }`}
       style={{
@@ -92,9 +92,9 @@ export function StickyNav() {
         WebkitBackdropFilter: isGallery ? "none" : "blur(12px)",
         backgroundColor: isGallery ? GALLERY_HEADER_GREY : undefined,
         background: isGallery ? GALLERY_HEADER_GREY : undefined,
+        paddingTop: "max(0.75rem, env(safe-area-inset-top))",
+        paddingBottom: "0.75rem",
         margin: 0,
-        paddingTop: "1rem",
-        paddingBottom: "1rem",
         borderTop: "none",
         borderBottom: "none",
         outline: "none",
@@ -110,7 +110,8 @@ export function StickyNav() {
           scroll={false}
           onClick={(e) => handleNavClick(e, tab.href)}
           className={`
-            text-[11px] tracking-[0.4em] uppercase no-underline
+            shrink-0 text-[9px] tracking-[0.18em] uppercase no-underline
+            sm:text-[11px] sm:tracking-[0.4em]
             transition-colors duration-200
             ${isActive(tab.href) ? "text-[#1A1A1A]" : "text-[#3A352E] hover:text-[#1A1A1A]"}
           `}
