@@ -49,9 +49,6 @@
   body:has(.home-page-root) {
     background: #050808 !important;
   }
-  html:has(.home-page-root) {
-    overflow-x: visible !important;
-  }
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-cormorant), Georgia, serif;
     font-weight: 300;
@@ -60,11 +57,6 @@
 }
 
 /* (Intentionally no SVG/mesh/grid overlays — keep background clean.) */
-
-/* Home: allow sticky reveal — no overflow clipping on ancestors */
-.main-content:has(.home-page-root) {
-  overflow: visible !important;
-}
 
 /* Main content below sticky nav */
 .main-content { padding-top: 4rem; }
