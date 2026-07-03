@@ -1,4 +1,4 @@
-/** Reveal ribbon — full nail image sticks to viewport while page scrolls past (no JS). */
+/** Reveal ribbon — image pins to viewport while the page scrolls past (CSS sticky). */
 const REVEAL_IMAGE = "/Untitled%20design%204.png"
 
 export function RevealWindow() {
@@ -7,7 +7,8 @@ export function RevealWindow() {
       className="relative z-10 mt-[100px] mb-[100px]"
       aria-label="Reveal window"
     >
-      <div className="relative w-full">
+      {/* Tall track = scroll room; image stays pinned while prices/hero move */}
+      <div className="relative min-h-[125vh] w-full sm:min-h-[110vh]">
         <div className="sticky top-0 z-[5] overflow-hidden border border-[#8D8679]">
           <div className="relative h-[50vh] min-h-[300px] w-full sm:h-[420px]">
             <img
@@ -26,8 +27,6 @@ export function RevealWindow() {
             />
           </div>
         </div>
-        {/* Short scroll runway — keeps reveal without a large black band */}
-        <div className="h-[10vh] sm:h-[12vh]" aria-hidden />
       </div>
     </section>
   )
