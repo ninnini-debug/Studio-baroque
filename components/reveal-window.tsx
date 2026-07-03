@@ -1,35 +1,46 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 
-/** Reveal ribbon image — iOS-safe (no background-attachment: fixed). */
+/** Reveal ribbon image — iOS-safe parallax without React scroll re-renders. */
 const REVEAL_IMAGE = "/Untitled%20design%204.png"
 
 export function RevealWindow() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const [imageTop, setImageTop] = useState(0)
+  const imageLayerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const update = () => {
-      const el = containerRef.current
-      if (!el) return
+    const container = containerRef.current
+    const layer = imageLayerRef.current
+    if (!container || !layer) return
 
+    let rafId = 0
+
+    const update = () => {
+      rafId = 0
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
       if (reduced) {
-        setImageTop(0)
+        layer.style.transform = "translate3d(0, 0, 0)"
         return
       }
 
-      const rect = el.getBoundingClientRect()
-      setImageTop(-rect.top)
+      const rect = container.getBoundingClientRect()
+      const y = Math.round(-rect.top)
+      layer.style.transform = `translate3d(0, ${y}px, 0)`
+    }
+
+    const scheduleUpdate = () => {
+      if (rafId) return
+      rafId = requestAnimationFrame(update)
     }
 
     update()
-    window.addEventListener("scroll", update, { passive: true })
-    window.addEventListener("resize", update)
+    window.addEventListener("scroll", scheduleUpdate, { passive: true })
+    window.addEventListener("resize", scheduleUpdate)
     return () => {
-      window.removeEventListener("scroll", update)
-      window.removeEventListener("resize", update)
+      window.removeEventListener("scroll", scheduleUpdate)
+      window.removeEventListener("resize", scheduleUpdate)
+      if (rafId) cancelAnimationFrame(rafId)
     }
   }, [])
 
@@ -45,16 +56,14 @@ export function RevealWindow() {
       >
         <div className="absolute inset-0 z-10 overflow-hidden border border-[#8D8679]">
           <div
-            className="pointer-events-none absolute left-0 w-full"
-            style={{
-              top: imageTop,
-              height: "100vh",
-            }}
+            ref={imageLayerRef}
+            className="pointer-events-none absolute left-0 w-full will-change-transform"
+            style={{ top: 0, height: "100vh" }}
           >
             <img
               src={REVEAL_IMAGE}
               alt=""
-              className="h-full w-full object-cover object-center sm:object-[center_38%]"
+              className="h-full w-full origin-center scale-[0.82] object-cover object-center sm:scale-[0.88] sm:object-[center_38%]"
               draggable={false}
             />
           </div>
