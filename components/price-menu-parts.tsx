@@ -1,20 +1,20 @@
 import type { PriceItem, PriceSection } from "@/lib/prices-menu"
 import { priceRowUsesShiftPadding } from "@/lib/prices-menu"
+import { ACTIVE_PRICE_CARD_THEME } from "@/lib/price-card-theme"
 
-const DEFAULT_INK = "#1A1A1A"
+const SERIF = "var(--font-cormorant), Optima, Georgia, serif"
 
 type PriceCategoryHeaderProps = {
   title: string
-  /** Text colour (e.g. home vs /prices) */
-  color?: string
+  color: string
 }
 
-export function PriceCategoryHeader({ title, color = DEFAULT_INK }: PriceCategoryHeaderProps) {
+export function PriceCategoryHeader({ title, color }: PriceCategoryHeaderProps) {
   return (
     <h2
       className="text-center text-[10px] font-medium uppercase tracking-[0.42em] sm:text-[11px] md:text-[12px] md:tracking-[0.48em]"
       style={{
-        fontFamily: "Optima, var(--font-cormorant), Georgia, serif",
+        fontFamily: SERIF,
         color,
       }}
     >
@@ -25,10 +25,12 @@ export function PriceCategoryHeader({ title, color = DEFAULT_INK }: PriceCategor
 
 type PriceMenuRowProps = {
   item: PriceItem
-  color?: string
+  textColor: string
+  priceColor: string
+  noteColor: string
 }
 
-export function PriceMenuRow({ item, color = DEFAULT_INK }: PriceMenuRowProps) {
+export function PriceMenuRow({ item, textColor, priceColor, noteColor }: PriceMenuRowProps) {
   const shiftRight = priceRowUsesShiftPadding(item.name)
   return (
     <div className="py-6 md:py-7">
@@ -36,22 +38,25 @@ export function PriceMenuRow({ item, color = DEFAULT_INK }: PriceMenuRowProps) {
         <div
           className="text-[16px] leading-snug md:text-[17px]"
           style={{
-            fontFamily: "var(--font-cormorant), Georgia, serif",
-            color,
+            fontFamily: SERIF,
+            color: textColor,
             paddingLeft: shiftRight ? 8 : undefined,
           }}
         >
           {item.name}
         </div>
         <div
-          className="whitespace-nowrap text-[13px] tracking-[0.12em] md:text-[14px]"
-          style={{ fontFamily: "var(--font-cormorant), Georgia, serif", color, letterSpacing: "0.12em" }}
+          className="whitespace-nowrap text-[14px] tracking-[0.12em] md:text-[15px]"
+          style={{ fontFamily: SERIF, color: priceColor, letterSpacing: "0.12em" }}
         >
           {item.price}
         </div>
       </div>
       {item.note ? (
-        <div className="mt-2.5 text-[12px] opacity-75" style={{ fontFamily: "var(--font-cormorant), Georgia, serif", color }}>
+        <div
+          className="mt-2.5 text-[12px] opacity-75"
+          style={{ fontFamily: SERIF, color: noteColor }}
+        >
           {item.note}
         </div>
       ) : null}
@@ -61,24 +66,36 @@ export function PriceMenuRow({ item, color = DEFAULT_INK }: PriceMenuRowProps) {
 
 type PriceMenuSectionProps = {
   section: PriceSection
+  /** Legacy prop — page-level ink; card theme colours take precedence inside the panel */
   color?: string
 }
 
-export function PriceMenuSection({ section, color = DEFAULT_INK }: PriceMenuSectionProps) {
+export function PriceMenuSection({ section }: PriceMenuSectionProps) {
+  const theme = ACTIVE_PRICE_CARD_THEME
+
   return (
     <section>
-      <div className="mx-auto max-w-xl rounded-sm border border-[#8D8679]/22 bg-white/40 px-8 py-10 backdrop-blur-md md:px-14 md:py-14">
+      <div
+        className={`mx-auto max-w-xl rounded-sm px-8 py-10 md:px-14 md:py-14 ${theme.cardClassName}`}
+      >
         <div className="mb-10 md:mb-12">
-          <PriceCategoryHeader title={section.category} color={color} />
+          <PriceCategoryHeader title={section.category} color={theme.categoryColor} />
         </div>
 
         <div className="mx-auto max-w-lg">
           {section.items.map((item, idx) => (
             <div
               key={`${section.category}-${item.name}`}
-              className={idx < section.items.length - 1 ? "border-b border-[#8D8679]/10" : undefined}
+              className={
+                idx < section.items.length - 1 ? `border-b ${theme.dividerClassName}` : undefined
+              }
             >
-              <PriceMenuRow item={item} color={color} />
+              <PriceMenuRow
+                item={item}
+                textColor={theme.textColor}
+                priceColor={theme.priceColor}
+                noteColor={theme.noteColor}
+              />
             </div>
           ))}
         </div>
@@ -87,11 +104,11 @@ export function PriceMenuSection({ section, color = DEFAULT_INK }: PriceMenuSect
   )
 }
 
-export function PriceMenuDisclaimer({ color = DEFAULT_INK }: { color?: string }) {
+export function PriceMenuDisclaimer() {
   return (
     <p
-      className="mx-auto mt-16 max-w-xl px-2 text-center text-[11px] leading-relaxed tracking-[0.02em] md:text-[12px]"
-      style={{ fontFamily: "var(--font-cormorant), Georgia, serif", color }}
+      className="mx-auto mt-16 max-w-xl px-2 text-center text-base leading-relaxed tracking-[0.02em] md:text-lg"
+      style={{ fontFamily: SERIF, color: "#000000" }}
     >
       Prices listed are base rates. Detailed hand-painted art is quoted upon enquiry based on complexity and time.
     </p>

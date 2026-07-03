@@ -13,8 +13,8 @@ export const PRICES_MENU: PriceSection[] = [
   {
     category: "Acrylics",
     items: [
-      { name: "Full Set (Plain)", price: "£45—" },
-      { name: "Infill", price: "£35—" },
+      { name: "Full Set (Plain)", price: "£35—" },
+      { name: "Infill", price: "£20—" },
       { name: "Removal", price: "£15—" },
     ],
   },

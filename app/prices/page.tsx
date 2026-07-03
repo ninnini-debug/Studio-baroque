@@ -8,7 +8,7 @@ export default function PricesPage() {
     <main
       className="relative min-h-screen overflow-hidden"
       style={{
-        backgroundColor: "#FDFCF9",
+        backgroundColor: "transparent",
       }}
     >
       <div className="pointer-events-none fixed inset-0" style={{ zIndex: 0 }} aria-hidden>
@@ -30,16 +30,6 @@ export default function PricesPage() {
           }}
         />
       </div>
-      <div
-        className="pointer-events-none fixed inset-0"
-        style={{
-          zIndex: 1,
-          background: "rgba(253,252,249,0.78)",
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
-        }}
-        aria-hidden
-      />
         <div className="relative z-10 mx-auto max-w-3xl px-6 py-16 md:px-10 md:py-24">
         <div className="prices-menu-hero mb-16 flex flex-col items-center">
           <p
@@ -64,7 +54,7 @@ export default function PricesPage() {
           ))}
         </div>
 
-        <PriceMenuDisclaimer color={IVORY} />
+        <PriceMenuDisclaimer />
       </div>
     </main>
   )

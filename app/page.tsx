@@ -1,8 +1,9 @@
 import Link from "next/link"
 import { PriceMenuDisclaimer, PriceMenuSection } from "@/components/price-menu-parts"
+import { EDITORIAL } from "@/lib/editorial-theme"
 import { PRICES_MENU } from "@/lib/prices-menu"
 
-const CHARCOAL = "#1A1A1A"
+const CHARCOAL = EDITORIAL.ink
 
 export default function HomePage() {
   return (
@@ -12,8 +13,8 @@ export default function HomePage() {
     >
       {/* Full-screen video background */}
       <div
-        className="pointer-events-none"
-        style={{ position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", zIndex: -1 }}
+        className="pointer-events-none fixed inset-0"
+        style={{ zIndex: 0 }}
         aria-hidden
       >
         <video
@@ -38,6 +39,15 @@ export default function HomePage() {
       {/* Hero: title + CTA */}
       <section className="relative min-h-[calc(100vh-4rem)] w-full flex flex-col z-10">
         <div className="relative z-20 flex-1 flex flex-col items-center justify-center px-6">
+          <p
+            className="mb-2 text-center text-sm font-medium uppercase tracking-[0.3em] sm:mb-2.5 sm:text-[15px]"
+            style={{
+              fontFamily: "var(--font-cormorant), Optima, Georgia, serif",
+              color: CHARCOAL,
+            }}
+          >
+            A Private Nail Studio
+          </p>
           <h1
             className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-normal text-center"
             style={{
@@ -48,15 +58,6 @@ export default function HomePage() {
           >
             STUDIO BAROQUE
           </h1>
-          <p
-            className="mt-3 text-[9px] sm:text-[10px] tracking-[0.28em] uppercase text-center"
-            style={{
-              fontFamily: "var(--font-cormorant), Optima, Georgia, serif",
-              color: CHARCOAL,
-            }}
-          >
-            Precision. Detail. Artistry
-          </p>
         </div>
 
         <div className="relative z-20 flex justify-center pb-16">
@@ -81,7 +82,7 @@ export default function HomePage() {
           marginTop: 100,
           marginBottom: 100,
           position: "relative",
-          zIndex: 0,
+          zIndex: 10,
         }}
         aria-label="Reveal window"
       >
@@ -132,8 +133,9 @@ export default function HomePage() {
         id="prices-section"
         className="prices-section-root relative"
         style={{
-          zIndex: 3,
+          zIndex: 10,
           scrollMarginTop: "calc(7rem + 40px)",
+          background: "transparent",
         }}
       >
         <div className="prices-section-content max-w-3xl mx-auto px-6 md:px-10 pt-16 md:pt-24 pb-20 md:pb-28">
@@ -160,7 +162,7 @@ export default function HomePage() {
             ))}
           </div>
 
-          <PriceMenuDisclaimer color={CHARCOAL} />
+          <PriceMenuDisclaimer />
         </div>
       </section>
     </main>
