@@ -63,8 +63,7 @@
 @media (max-width: 639px) {
   .main-content { padding-top: 4.25rem; }
   #main-site-nav {
-    padding-left: max(0.75rem, env(safe-area-inset-left));
-    padding-right: max(0.75rem, env(safe-area-inset-right));
+    padding-right: max(0.375rem, env(safe-area-inset-right));
   }
 }
 /* About: full-bleed hero — no top padding; overflow must not clip sticky */

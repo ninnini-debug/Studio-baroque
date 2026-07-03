@@ -84,7 +84,7 @@ export function StickyNav() {
   return (
     <nav
       id="main-site-nav"
-      className={`fixed top-0 left-0 right-0 z-[110] flex w-full max-w-none flex-wrap items-center justify-center gap-x-3 gap-y-1 px-3 py-3 sm:gap-x-10 sm:gap-y-0 sm:px-4 sm:py-4 md:gap-x-14 ${
+      className={`fixed top-0 left-0 right-0 z-[110] flex w-full max-w-none items-center justify-between px-[max(0.375rem,env(safe-area-inset-left))] py-3 sm:justify-center sm:gap-x-10 sm:px-4 sm:py-4 md:gap-x-14 ${
         isGallery ? "gallery-nav-band" : "bg-[#FDFCF9]/78"
       }`}
       style={{
