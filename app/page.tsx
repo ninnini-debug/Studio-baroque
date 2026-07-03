@@ -9,7 +9,7 @@ const CHARCOAL = EDITORIAL.ink
 export default function HomePage() {
   return (
     <main
-      className="home-page-root relative w-full"
+      className="home-page-root relative w-full overflow-visible"
       style={{ minHeight: "200vh", background: "transparent" }}
     >
       {/* Full-screen video background */}
