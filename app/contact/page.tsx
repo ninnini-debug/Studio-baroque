@@ -2,6 +2,7 @@
 
 import type { CSSProperties, FormEvent } from "react"
 import { useRef, useState } from "react"
+import { BackgroundVideo } from "@/components/background-video"
 import { PageEditorialHeader } from "@/components/editorial/page-header"
 import { StudioDetails } from "@/components/editorial/studio-details"
 import { EDITORIAL } from "@/lib/editorial-theme"
@@ -102,15 +103,10 @@ export default function ContactPage() {
 
   return (
     <main className="contact-page-root relative min-h-screen" style={{ color: INK }}>
-      <video
+      <BackgroundVideo
+        priority
         className="pointer-events-none fixed inset-0 z-0 h-full w-full object-cover"
         src="/Video%203.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-        aria-hidden
       />
       <div
         className="pointer-events-none fixed inset-0 z-[1] bg-[#FDFCF9]/52"

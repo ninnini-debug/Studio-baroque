@@ -8,6 +8,7 @@ import {
   type FanItem,
   type GalleryOpenDetail,
 } from "@/components/gallery-fan-stack"
+import { BackgroundVideo } from "@/components/background-video"
 import { GALLERY_HEADER_GREY } from "@/lib/gallery-theme"
 
 const HOME_VIDEO = "/video.mp4"
@@ -17,14 +18,10 @@ const VIDEO_2 = "/Video%202.mp4"
 function GalleryAtmosphere() {
   return (
     <div className="gallery-atmosphere pointer-events-none fixed inset-0 z-0" aria-hidden>
-      <video
+      <BackgroundVideo
+        priority
         className="absolute inset-0 h-full w-full object-cover"
         src={HOME_VIDEO}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
       />
       <div className="absolute inset-0 bg-[#FDFCF9]/50 backdrop-blur-[10px]" />
     </div>
@@ -33,16 +30,13 @@ function GalleryAtmosphere() {
 
 function SectionVideoBackdrop({ src }: { src: string }) {
   return (
-    <video
-      className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-center opacity-30"
-      src={src}
-      autoPlay
-      muted
-      loop
-      playsInline
-      preload="auto"
-      aria-hidden
-    />
+    <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden>
+      <BackgroundVideo
+        className="h-full w-full object-cover object-center opacity-30"
+        src={src}
+        rootMargin="400px 0px"
+      />
+    </div>
   )
 }
 

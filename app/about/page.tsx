@@ -1,4 +1,5 @@
 import { AboutBioReveal } from "@/components/about-bio-reveal"
+import { BackgroundVideo } from "@/components/background-video"
 import { PageEditorialHeader, PortraitSectionHeader } from "@/components/editorial/page-header"
 
 const ARTIST_PORTRAIT = "/IMG_9037.jpg"
@@ -8,15 +9,7 @@ export default function AboutPage() {
     <main className="about-page-root relative w-full min-h-screen overflow-visible bg-transparent">
       {/* Fixed video — full viewport, behind UI */}
       <div className="about-page-video-layer home-hero-video">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          src="/studio-process.mp4"
-          aria-hidden
-        />
+        <BackgroundVideo priority src="/studio-process.mp4" />
       </div>
 
       {/* Opening headline over video */}

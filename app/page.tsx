@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { BackgroundVideo } from "@/components/background-video"
 import { PriceMenuDisclaimer, PriceMenuSection } from "@/components/price-menu-parts"
 import { RevealWindow } from "@/components/reveal-window"
 import { EDITORIAL } from "@/lib/editorial-theme"
@@ -18,7 +19,8 @@ export default function HomePage() {
         style={{ zIndex: 0 }}
         aria-hidden
       >
-        <video
+        <BackgroundVideo
+          priority
           className="home-hero-video"
           style={{
             position: "fixed",
@@ -28,11 +30,6 @@ export default function HomePage() {
             height: "100vh",
             objectFit: "cover",
           }}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
           src="/video.mp4"
         />
       </div>

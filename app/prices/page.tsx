@@ -1,4 +1,5 @@
 import { PriceMenuDisclaimer, PriceMenuSection } from "@/components/price-menu-parts"
+import { BackgroundVideo } from "@/components/background-video"
 import { PRICES_MENU } from "@/lib/prices-menu"
 
 const IVORY = "#1A1A1A"
@@ -12,12 +13,8 @@ export default function PricesPage() {
       }}
     >
       <div className="pointer-events-none fixed inset-0" style={{ zIndex: 0 }} aria-hidden>
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
+        <BackgroundVideo
+          priority
           src="/video.mp4"
           style={{
             position: "fixed",
