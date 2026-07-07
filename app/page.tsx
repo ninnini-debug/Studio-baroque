@@ -88,7 +88,7 @@ export default function HomePage() {
           background: "transparent",
         }}
       >
-        <div className="prices-section-content max-w-3xl mx-auto px-6 md:px-10 pt-16 md:pt-24 pb-20 md:pb-28">
+        <div className="prices-section-content max-w-3xl mx-auto px-6 md:px-10 pt-10 pb-20 md:pb-28">
           <div className="prices-menu-hero mb-16 flex flex-col items-center">
             <p
               className="text-[10px] tracking-[0.5em] uppercase text-center mb-3"
