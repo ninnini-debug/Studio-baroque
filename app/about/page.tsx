@@ -9,7 +9,7 @@ export default function AboutPage() {
     <main className="about-page-root relative w-full min-h-screen overflow-visible bg-transparent">
       {/* Fixed video — full viewport, behind UI */}
       <div className="about-page-video-layer home-hero-video">
-        <BackgroundVideo priority src="/studio-process.mp4" />
+        <BackgroundVideo priority src="/studio-video-process.mp4" />
       </div>
 
       {/* Opening headline over video */}
