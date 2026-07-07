@@ -64,7 +64,7 @@ export default function ContactPage() {
 
     if (!FORMSPREE_FORM_ID?.trim()) {
       setSubmitError(
-        "Enquiries are not connected yet. Add NEXT_PUBLIC_FORMSPREE_FORM_ID to your environment (see .env.example).",
+        "Enquiries are not connected yet. Add NEXT_PUBLIC_FORMSPREE_FORM_ID in Vercel, then redeploy.",
       )
       return
     }
@@ -74,14 +74,13 @@ export default function ContactPage() {
 
     setSubmitting(true)
     try {
-      const res = await fetch(`https://formspree.io/f/${FORMSPREE_FORM_ID.trim()}`, {
+      const res = await fetch("/api/contact", {
         method: "POST",
         body: formData,
-        headers: { Accept: "application/json" },
       })
-      const data = (await res.json().catch(() => ({}))) as { error?: string; errors?: { message: string }[] }
+      const data = (await res.json().catch(() => ({}))) as { error?: string; ok?: boolean }
 
-      if (res.ok) {
+      if (res.ok && data.ok) {
         form.reset()
         setFileLabel(null)
         setDateError(null)
@@ -89,11 +88,10 @@ export default function ContactPage() {
         return
       }
 
-      const msg =
+      setSubmitError(
         data.error ||
-        data.errors?.map((err) => err.message).join(" ") ||
-        "Something went wrong. Please try again or email directly."
-      setSubmitError(msg)
+          "Something went wrong. Please try again or email nailsbyStudioB@gmail.com directly.",
+      )
     } catch {
       setSubmitError("Network error. Please check your connection and try again.")
     } finally {
