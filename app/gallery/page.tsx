@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useState } from "react"
+import { createPortal } from "react-dom"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import {
   CardStack,
@@ -94,6 +95,12 @@ function LightboxGallery({
   onPrev: () => void
   onNext: () => void
 }) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   useEffect(() => {
     if (state === null) return
     const onKey = (e: KeyboardEvent) => {
@@ -111,15 +118,24 @@ function LightboxGallery({
     return () => window.removeEventListener("keydown", onKey)
   }, [state, onClose, onPrev, onNext])
 
-  if (state === null) return null
+  useEffect(() => {
+    if (state === null) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [state])
+
+  if (state === null || !mounted) return null
 
   const { items, index } = state
   const src = items[index]
   const label = `${index + 1} / ${items.length}`
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-[120] flex items-center justify-center bg-[#050505]/96 p-4 sm:p-6"
+      className="fixed inset-0 z-[200] flex items-center justify-center bg-[#050505]/96 p-4 sm:p-6"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -132,22 +148,29 @@ function LightboxGallery({
           e.stopPropagation()
           onClose()
         }}
-        className="fixed right-3 top-3 z-[130] flex h-12 w-12 items-center justify-center rounded-full border border-white/25 bg-black/55 text-white shadow-lg backdrop-blur-sm transition-colors hover:bg-black/75 sm:right-5 sm:top-5"
+        className="fixed z-[210] flex h-12 w-12 items-center justify-center rounded-full border-2 border-white/50 bg-black/75 text-white shadow-lg backdrop-blur-sm transition-colors hover:bg-black/90 sm:h-11 sm:w-11"
+        style={{
+          top: "max(1rem, calc(env(safe-area-inset-top, 0px) + 0.75rem))",
+          right: "max(1rem, env(safe-area-inset-right, 0px))",
+        }}
         aria-label="Close"
       >
-        <X size={22} strokeWidth={2} />
+        <X size={24} strokeWidth={2.25} />
       </button>
 
       <p
-        className="pointer-events-none fixed left-1/2 top-4 z-[130] -translate-x-1/2 text-[10px] tabular-nums tracking-[0.2em] text-white/70"
-        style={{ fontFamily: "var(--font-cormorant), Georgia, serif" }}
+        className="pointer-events-none fixed left-1/2 z-[210] -translate-x-1/2 text-[10px] tabular-nums tracking-[0.2em] text-white/70"
+        style={{
+          top: "max(1rem, calc(env(safe-area-inset-top, 0px) + 0.75rem))",
+          fontFamily: "var(--font-cormorant), Georgia, serif",
+        }}
         aria-live="polite"
       >
         {label}
       </p>
 
       <div
-        className="relative z-[50] flex w-full max-w-5xl items-center justify-center gap-2 sm:gap-4"
+        className="relative z-[205] flex w-full max-w-5xl items-center justify-center gap-2 sm:gap-4"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -162,7 +185,18 @@ function LightboxGallery({
           <ChevronLeft size={26} strokeWidth={1.5} />
         </button>
 
-        <div className="flex min-h-0 min-w-0 flex-1 items-center justify-center">
+        <div className="relative flex min-h-0 min-w-0 flex-1 items-center justify-center">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              onClose()
+            }}
+            className="absolute right-1 top-1 z-20 flex h-10 w-10 items-center justify-center rounded-full border-2 border-white/45 bg-black/70 text-white shadow-md backdrop-blur-sm transition-colors hover:bg-black/90 sm:right-2 sm:top-2 sm:h-11 sm:w-11"
+            aria-label="Close image"
+          >
+            <X size={20} strokeWidth={2.25} />
+          </button>
           <img key={src} src={src} alt="" className="max-h-[85vh] w-auto max-w-full object-contain" />
         </div>
 
@@ -178,7 +212,8 @@ function LightboxGallery({
           <ChevronRight size={26} strokeWidth={1.5} />
         </button>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
 
