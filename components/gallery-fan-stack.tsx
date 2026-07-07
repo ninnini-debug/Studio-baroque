@@ -20,8 +20,8 @@ const FAN_X_VW_WIDE = ["-25vw", "0vw", "25vw"] as const
 const FAN_ROT = [-2, 0, 2] as const
 
 /** Mobile: tighter vw + vertical fan */
-const FAN_X_MOBILE = ["-14vw", "0vw", "15vw"] as const
-const FAN_Y_MOBILE = [-88, 0, 100] as const
+const FAN_X_MOBILE = ["-10vw", "0vw", "11vw"] as const
+const FAN_Y_MOBILE = [-58, 0, 66] as const
 
 export type FanItem = { src: string; alt: string }
 
@@ -144,18 +144,18 @@ export function CardStack({ title, items, onOpen, headingInsetClass }: CardStack
 
   return (
     <div
-      className="relative z-[10] mx-auto w-full max-w-[960px] !overflow-visible px-4 pb-20 pt-2 md:px-8 md:pb-28 md:pt-4"
+      className="relative z-[10] mx-auto w-full max-w-[960px] !overflow-visible px-3 pb-12 pt-1 md:px-8 md:pb-28 md:pt-4"
       style={{ overflow: "visible" }}
     >
       {/* Floating category label: top-left of stack column + guided line to the right */}
       <div
         className={cn(
-          "relative z-20 mb-8 flex w-full max-w-[min(100vw-2rem,960px)] items-center gap-3 md:mb-10 md:gap-4",
+          "relative z-20 mb-5 flex w-full max-w-[min(100vw-2rem,960px)] items-center gap-2.5 md:mb-10 md:gap-4",
           headingInsetClass,
         )}
       >
         <h2
-          className="shrink-0 text-left text-[1.05rem] font-light italic leading-snug tracking-[0.04em] text-[#1A1A1A] sm:text-[1.15rem] md:text-[1.25rem]"
+          className="shrink-0 text-left text-[0.95rem] font-light italic leading-snug tracking-[0.04em] text-[#1A1A1A] sm:text-[1.15rem] md:text-[1.25rem]"
           style={{ fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif", fontWeight: 300 }}
         >
           {title}
@@ -171,24 +171,24 @@ export function CardStack({ title, items, onOpen, headingInsetClass }: CardStack
         className={cn(
           "relative mx-auto flex w-full !max-w-none flex-col items-center justify-center !overflow-visible",
           "pt-0 md:min-h-[min(460px,78vh)]",
-          isOpen && !isWide && "min-h-[min(540px,88vh)]",
+          isOpen && !isWide && "min-h-[min(380px,72vh)]",
         )}
         style={{ overflow: "visible" }}
       >
         <div
-          className="flex w-full min-w-0 max-w-[100%] flex-col items-center justify-center !overflow-visible py-6 md:py-10"
+          className="flex w-full min-w-0 max-w-[100%] flex-col items-center justify-center !overflow-visible py-3 md:py-10"
           style={{ overflow: "visible" }}
         >
           <div
             className={cn(
-              "relative flex w-full min-w-0 items-center justify-center !overflow-visible px-2 md:min-h-[min(400px,70vh)] md:px-[clamp(0.5rem,4vw,3rem)]",
-              isWide ? "min-w-0" : "max-w-[min(100%,420px)]",
+              "relative flex w-full min-w-0 items-center justify-center !overflow-visible px-1 md:min-h-[min(400px,70vh)] md:px-[clamp(0.5rem,4vw,3rem)]",
+              isWide ? "min-w-0" : "max-w-[min(100%,260px)]",
             )}
             style={{ overflow: "visible" }}
           >
             {/* Stage: wide enough for vw-based fan; overflow never clips children */}
             <div
-              className="relative mx-auto aspect-[3/4] w-[min(280px,calc(100vw-2rem))] max-w-[280px] !overflow-visible"
+              className="relative mx-auto aspect-[3/4] w-[min(200px,calc(100vw-3.5rem))] max-w-[200px] !overflow-visible md:w-[min(280px,calc(100vw-2rem))] md:max-w-[280px]"
               style={{ overflow: "visible" }}
             >
               {!isOpen && (

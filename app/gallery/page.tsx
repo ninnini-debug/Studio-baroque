@@ -213,15 +213,15 @@ export default function GalleryPage() {
           className="gallery-page-header w-full max-w-none"
           style={{ backgroundColor: GALLERY_HEADER_GREY }}
         >
-          <div className="mx-auto max-w-[1400px] px-10 pb-10 pt-[4.5rem] text-center sm:px-12 md:px-16 md:pb-12 md:pt-24">
+          <div className="mx-auto max-w-[1400px] px-5 pb-6 pt-[4.5rem] text-center sm:px-12 md:px-16 md:pb-12 md:pt-24">
             <p
-              className="mb-2 text-[10px] uppercase tracking-[0.5em] text-[#141414]"
+              className="mb-1.5 text-[9px] uppercase tracking-[0.45em] text-[#141414] md:mb-2 md:text-[10px] md:tracking-[0.5em]"
               style={{ fontFamily: "Optima, var(--font-cormorant), Georgia, serif" }}
             >
               Portfolio
             </p>
             <h1
-              className="text-6xl font-normal capitalize leading-none text-[#141414] md:text-7xl lg:text-8xl"
+              className="text-4xl font-normal capitalize leading-none text-[#141414] md:text-7xl lg:text-8xl"
               style={{
                 fontFamily: "var(--font-calligraphy), 'Allura', cursive",
                 letterSpacing: "0.02em",
@@ -232,20 +232,20 @@ export default function GalleryPage() {
           </div>
         </header>
 
-        <div className="relative mx-auto max-w-[1400px] overflow-visible px-10 pb-24 pt-0 sm:px-12 sm:pb-28 md:px-16">
+        <div className="relative mx-auto max-w-[1400px] overflow-visible px-5 pb-16 pt-0 sm:px-12 sm:pb-28 md:px-16">
           <section
             id="gallery-nail-art"
-            className="relative mb-[150px] mt-10 flex w-full flex-col items-center justify-center overflow-visible md:mt-12"
+            className="relative mb-20 mt-6 flex w-full flex-col items-center justify-center overflow-visible md:mb-[150px] md:mt-12"
           >
             <SectionVideoBackdrop src={VIDEO_FLOWER} />
             <div className="relative z-10 flex w-full flex-col items-center justify-center">
-              <CardStack title="Nail art" items={NAIL_ITEMS} onOpen={open} headingInsetClass="pl-[10%]" />
+              <CardStack title="Nail art" items={NAIL_ITEMS} onOpen={open} headingInsetClass="pl-[5%] md:pl-[10%]" />
             </div>
           </section>
 
           <section
             id="gallery-individual"
-            className="relative mb-[150px] flex w-full flex-col items-center justify-center overflow-visible"
+            className="relative mb-20 flex w-full flex-col items-center justify-center overflow-visible md:mb-[150px]"
           >
             <SectionVideoBackdrop src={VIDEO_2} />
             <div className="relative z-10 flex w-full flex-col items-center justify-center">
