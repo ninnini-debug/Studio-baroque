@@ -13,7 +13,7 @@ import { GALLERY_HEADER_GREY } from "@/lib/gallery-theme"
 
 const HOME_VIDEO = "/video.mp4"
 const VIDEO_FLOWER = "/flower-video.mp4"
-const VIDEO_2 = "/Video%202.mp4"
+const VIDEO_2 = "/Video-video2.mp4"
 
 function GalleryAtmosphere() {
   return (
