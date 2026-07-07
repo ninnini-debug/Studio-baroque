@@ -84,7 +84,7 @@ export function StickyNav() {
   return (
     <nav
       id="main-site-nav"
-      className={`fixed top-0 left-0 right-0 z-[110] flex w-full max-w-none items-center justify-center gap-x-2.5 px-[max(0.375rem,env(safe-area-inset-left))] py-3 sm:gap-x-10 sm:px-4 sm:py-4 md:gap-x-14 ${
+      className={`fixed top-0 left-0 right-0 z-[110] flex w-full max-w-none items-center justify-center gap-x-2 px-[max(0.375rem,env(safe-area-inset-left))] py-3 sm:gap-x-10 sm:px-4 sm:py-4 md:gap-x-14 ${
         isGallery ? "gallery-nav-band" : "bg-[#FDFCF9]/78"
       }`}
       style={{
@@ -93,7 +93,6 @@ export function StickyNav() {
         backgroundColor: isGallery ? GALLERY_HEADER_GREY : undefined,
         background: isGallery ? GALLERY_HEADER_GREY : undefined,
         paddingTop: "max(0.75rem, env(safe-area-inset-top))",
-        paddingBottom: "0.75rem",
         margin: 0,
         borderTop: "none",
         borderBottom: "none",
@@ -110,7 +109,8 @@ export function StickyNav() {
           scroll={false}
           onClick={(e) => handleNavClick(e, tab.href)}
           className={`
-            shrink-0 text-[9px] tracking-[0.12em] uppercase no-underline
+            shrink-0 text-[10px] tracking-[0.1em] uppercase no-underline
+            max-sm:inline-flex max-sm:items-center max-sm:justify-center max-sm:min-h-[44px] max-sm:px-1.5
             sm:text-[11px] sm:tracking-[0.4em]
             transition-colors duration-200
             ${isActive(tab.href) ? "text-[#1A1A1A]" : "text-[#3A352E] hover:text-[#1A1A1A]"}
