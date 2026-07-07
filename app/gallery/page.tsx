@@ -186,17 +186,6 @@ function LightboxGallery({
         </button>
 
         <div className="relative flex min-h-0 min-w-0 flex-1 items-center justify-center">
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation()
-              onClose()
-            }}
-            className="absolute right-1 top-1 z-20 flex h-10 w-10 items-center justify-center rounded-full border-2 border-white/45 bg-black/70 text-white shadow-md backdrop-blur-sm transition-colors hover:bg-black/90 sm:right-2 sm:top-2 sm:h-11 sm:w-11"
-            aria-label="Close image"
-          >
-            <X size={20} strokeWidth={2.25} />
-          </button>
           <img key={src} src={src} alt="" className="max-h-[85vh] w-auto max-w-full object-contain" />
         </div>
 
