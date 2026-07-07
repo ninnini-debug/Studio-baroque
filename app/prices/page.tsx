@@ -15,7 +15,7 @@ export default function PricesPage() {
       <div className="pointer-events-none fixed inset-0" style={{ zIndex: 0 }} aria-hidden>
         <BackgroundVideo
           priority
-          src="/video.mp4"
+          src="/Video-video.mp4"
           style={{
             position: "fixed",
             top: 0,

@@ -11,7 +11,7 @@ import {
 import { BackgroundVideo } from "@/components/background-video"
 import { GALLERY_HEADER_GREY } from "@/lib/gallery-theme"
 
-const HOME_VIDEO = "/video.mp4"
+const HOME_VIDEO = "/Video-video.mp4"
 const VIDEO_FLOWER = "/flower-video.mp4"
 const VIDEO_2 = "/Video-video2.mp4"
 
@@ -53,9 +53,9 @@ const INDIVIDUAL_SRC = [
 ] as const
 
 const FINE_ART_FLOWERS = [
-  { id: "f1", src: "/fine-art-2.PNG", title: "Vase & Bloom" },
+  { id: "f1", src: "/fine-art-vase.jpg", title: "Vase & Bloom" },
   { id: "f2", src: "/fine-art-2.jpg", title: "Still Life" },
-  { id: "f3", src: "/fine-art-3.PNG", title: "Portrait" },
+  { id: "f3", src: "/fine-art-portrait.jpg", title: "Portrait" },
 ] as const
 
 const NAIL_ITEMS: readonly [FanItem, FanItem, FanItem] = [

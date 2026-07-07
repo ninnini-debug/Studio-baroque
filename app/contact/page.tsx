@@ -14,7 +14,7 @@ const INK = EDITORIAL.ink
 const MUTED = EDITORIAL.muted
 const BORDER_TAUPE = EDITORIAL.borderTaupe
 
-const FLOWER_BG = "/fine-art-3.PNG"
+const FLOWER_BG = "/fine-art-portrait.jpg"
 
 const labelClass =
   "mb-2 block text-[9px] tracking-[0.42em] uppercase"

@@ -5,6 +5,7 @@ import { GalleryFrame } from '@/components/gallery-frame'
 import { ScrollToTop } from '@/components/scroll-to-top'
 import { SiteFooter } from '@/components/site-footer'
 import { StickyNav } from '@/components/sticky-nav'
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL } from '@/lib/site'
 import './globals.css'
 
 const cormorant = Cormorant_Garamond({
@@ -38,9 +39,41 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: 'StudioBaroqueNails | Bespoke Nail Artistry',
-  description: 'Bespoke nail artistry in West London. Where classical elegance meets modern beauty. Acrylics, gel, and custom nail art by Nina.',
-  generator: 'v0.app',
+  metadataBase: new URL(SITE_URL),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  keywords: [
+    'nail art',
+    'nail studio',
+    'West London nails',
+    'acrylic nails',
+    'gel nails',
+    'bespoke nail artistry',
+    'Studio Baroque',
+  ],
+  openGraph: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: '/',
+    siteName: SITE_NAME,
+    locale: 'en_GB',
+    type: 'website',
+    images: [
+      {
+        url: '/nail%20art%203.jpg',
+        width: 1200,
+        height: 1600,
+        alt: 'Studio Baroque bespoke nail art',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: ['/nail%20art%203.jpg'],
+  },
   icons: {
     icon: [
       {

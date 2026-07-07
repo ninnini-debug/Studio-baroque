@@ -30,7 +30,7 @@ export default function HomePage() {
             height: "100vh",
             objectFit: "cover",
           }}
-          src="/video.mp4"
+          src="/Video-video.mp4"
         />
       </div>
 
