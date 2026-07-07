@@ -4,11 +4,11 @@ const REVEAL_IMAGE = "/ladybug2.jpg"
 export function RevealWindow() {
   return (
     <section
-      className="relative z-10 mt-16 mb-6 md:mt-20"
+      className="relative z-10 mt-10 mb-0 md:mt-14"
       aria-label="Reveal window"
     >
       {/* Tall track = scroll room; image stays pinned while prices/hero move */}
-      <div className="relative min-h-[88vh] w-full">
+      <div className="relative min-h-[70vh] w-full">
         <div className="sticky top-0 z-[5] overflow-hidden border border-[#8D8679]">
           <div className="relative h-[50vh] min-h-[300px] w-full sm:h-[420px]">
             <img
