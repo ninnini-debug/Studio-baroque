@@ -19,7 +19,7 @@ export const PRICES_MENU: PriceSection[] = [
     ],
   },
   {
-    category: "Gel & Regular Polish",
+    category: "gel & BIAB",
     items: [
       { name: "Gel Manicure", price: "£30—" },
       { name: "BIAB/ hard gel", price: "£30—" },
