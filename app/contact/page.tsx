@@ -90,7 +90,7 @@ export default function ContactPage() {
 
       setSubmitError(
         data.error ||
-          "Something went wrong. Please try again or email nailsbyStudioB@gmail.com directly.",
+          "Something went wrong. Please try again or email info@studiobaroque.co.uk directly.",
       )
     } catch {
       setSubmitError("Network error. Please check your connection and try again.")
@@ -189,7 +189,7 @@ export default function ContactPage() {
                         type="email"
                         required
                         autoComplete="email"
-                        placeholder="nailsbyStudioB@gmail.com"
+                        placeholder="info@studiobaroque.co.uk"
                         className={fieldLine}
                         style={fieldStyle}
                       />
