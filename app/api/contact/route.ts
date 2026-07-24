@@ -1,15 +1,36 @@
 import { NextResponse } from "next/server"
 
+/**
+ * Accept either a bare Formspree ID (`xqkzabcd`) or a full endpoint URL
+ * (`https://formspree.io/f/xqkzabcd`) pasted into the env var by mistake.
+ */
 function getFormId(): string | null {
-  const id = process.env.FORMSPREE_FORM_ID ?? process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID
-  return id?.trim() || null
+  const raw = (process.env.FORMSPREE_FORM_ID ?? process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID)
+    ?.trim()
+    .replace(/^["']|["']$/g, "")
+  if (!raw) return null
+
+  const fromUrl = raw.match(/formspree\.io\/f\/([a-zA-Z0-9]+)/i)
+  if (fromUrl?.[1]) return fromUrl[1]
+
+  // Bare ID
+  if (/^[a-zA-Z0-9]+$/.test(raw)) return raw
+
+  // Last path segment fallback
+  const segment = raw.split("/").filter(Boolean).pop()
+  if (segment && /^[a-zA-Z0-9]+$/.test(segment)) return segment
+
+  return null
 }
 
 export async function POST(request: Request) {
   const formId = getFormId()
   if (!formId) {
     return NextResponse.json(
-      { error: "Contact form is not configured yet." },
+      {
+        error:
+          "Contact form is not configured correctly. In Vercel, set NEXT_PUBLIC_FORMSPREE_FORM_ID to only the form ID (e.g. xqkzabcd), not the full URL.",
+      },
       { status: 503 },
     )
   }
@@ -17,8 +38,6 @@ export async function POST(request: Request) {
   try {
     const incoming = await request.formData()
 
-    // Build a JSON payload Formspree accepts reliably from server-side posts.
-    // Skip binary file uploads for the JSON path (Formspree free tier is email-first).
     const payload: Record<string, string> = {}
     for (const [key, value] of incoming.entries()) {
       if (typeof value === "string") {
@@ -30,32 +49,23 @@ export async function POST(request: Request) {
       payload._replyto = payload.email
     }
 
-    // Always notify the studio mailbox subject line clearly
     if (!payload._subject) {
       payload._subject = "Studio Baroque — Booking enquiry"
     }
 
-    const endpoint = `https://formspree.io/f/${encodeURIComponent(formId)}`
-    const res = await fetch(endpoint, {
+    const res = await fetch(`https://formspree.io/f/${formId}`, {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
-      redirect: "manual",
     })
 
-    const rawText = await res.text()
-    let data: {
+    const data = (await res.json().catch(() => ({}))) as {
       error?: string
-      errors?: { message?: string; code?: string; field?: string }[]
+      errors?: { message?: string; code?: string }[]
       ok?: boolean
-    } = {}
-    try {
-      data = JSON.parse(rawText) as typeof data
-    } catch {
-      data = {}
     }
 
     if (res.ok) {
@@ -70,23 +80,12 @@ export async function POST(request: Request) {
         .join(" ") ||
       `Form service error (${res.status}). Please try again or email info@studiobaroque.co.uk.`
 
-    return NextResponse.json(
-      {
-        error: message,
-        status: res.status,
-        // Safe diagnostics only — never expose the form ID itself
-        formIdLength: formId.length,
-        formIdLooksValid: /^[a-zA-Z0-9]+$/.test(formId),
-        formspreeSnippet: rawText.slice(0, 180),
-      },
-      { status: res.status >= 400 && res.status < 600 ? res.status : 502 },
-    )
-  } catch (err) {
+    return NextResponse.json({ error: message }, { status: res.status >= 400 && res.status < 600 ? res.status : 502 })
+  } catch {
     return NextResponse.json(
       {
         error:
           "Could not send your enquiry. Please try again or email info@studiobaroque.co.uk.",
-        detail: err instanceof Error ? err.message : "unknown",
       },
       { status: 502 },
     )
