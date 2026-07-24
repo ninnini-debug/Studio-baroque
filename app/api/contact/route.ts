@@ -35,20 +35,27 @@ export async function POST(request: Request) {
       payload._subject = "Studio Baroque — Booking enquiry"
     }
 
-    const res = await fetch(`https://formspree.io/f/${formId}`, {
+    const endpoint = `https://formspree.io/f/${encodeURIComponent(formId)}`
+    const res = await fetch(endpoint, {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
+      redirect: "manual",
     })
 
-    const data = (await res.json().catch(() => ({}))) as {
+    const rawText = await res.text()
+    let data: {
       error?: string
       errors?: { message?: string; code?: string; field?: string }[]
       ok?: boolean
-      next?: string
+    } = {}
+    try {
+      data = JSON.parse(rawText) as typeof data
+    } catch {
+      data = {}
     }
 
     if (res.ok) {
@@ -67,14 +74,19 @@ export async function POST(request: Request) {
       {
         error: message,
         status: res.status,
+        // Safe diagnostics only — never expose the form ID itself
+        formIdLength: formId.length,
+        formIdLooksValid: /^[a-zA-Z0-9]+$/.test(formId),
+        formspreeSnippet: rawText.slice(0, 180),
       },
       { status: res.status >= 400 && res.status < 600 ? res.status : 502 },
     )
-  } catch {
+  } catch (err) {
     return NextResponse.json(
       {
         error:
           "Could not send your enquiry. Please try again or email info@studiobaroque.co.uk.",
+        detail: err instanceof Error ? err.message : "unknown",
       },
       { status: 502 },
     )
