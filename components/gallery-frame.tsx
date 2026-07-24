@@ -11,7 +11,7 @@ export function GalleryFrame() {
 
   return (
     <div
-      className="pointer-events-none fixed inset-0 z-[100] box-border border-0 border-solid border-[#FDFCF9] md:border-[40px] transition-none"
+      className="pointer-events-none fixed inset-0 z-[100] box-border border-0 transition-none"
       aria-hidden
       style={{
         opacity: show ? 1 : 0,
